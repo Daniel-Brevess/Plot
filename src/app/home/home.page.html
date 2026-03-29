@@ -1,31 +1,49 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Pag inicial
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [forceOverscroll]="false">
+  <div class="welcome-container">
+    
+    <div class="logo-box">
+      <h1 class="logo-text">P</h1>
+    </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <h2 class="welcome-title">Bem vindo ao Plot!</h2>
 
-  <div id="container">
-    <strong>Aqui vamos fazer os botoes de login e cadastro com card em javascript</strong>
-    <p><ion-button routerLink="/feed" router-direction="forward">
-  Ir para Feed
-</ion-button>
-</p>
-    <p><ion-button routerLink="/profile" router-direction="forward">
-  Ir para perfil
-</ion-button>
-</p>
-    <p><ion-button routerLink="/edit-profile" router-direction="forward">
-  Ir para editar perfil
-</ion-button>
-</p>
+    <div class="button-group">
+      <ion-button id="open-register" mode="ios" class="btn-primary">Cadastre-se</ion-button>
+      <ion-button id="open-login" mode="ios" class="btn-secondary">Login</ion-button>
+    </div>
+
+    <ion-modal trigger="open-register" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.8]">
+      <ng-template>
+        <div class="modal-content">
+          <h3>Criar Conta</h3>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="text" placeholder="Nome completo"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="email" placeholder="E-mail"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="password" placeholder="Senha"></ion-input>
+          </ion-item>
+          <ion-button expand="block" class="btn-modal">Cadastrar</ion-button>
+        </div>
+      </ng-template>
+    </ion-modal>
+
+    <ion-modal trigger="open-login" [initialBreakpoint]="0.4" [breakpoints]="[0, 0.4, 0.7]">
+      <ng-template>
+        <div class="modal-content">
+          <h3>Acessar Plot</h3>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="email" placeholder="E-mail"></ion-input>
+          </ion-item>
+          <ion-item lines="none" class="custom-input">
+            <ion-input type="password" placeholder="Senha"></ion-input>
+          </ion-item>
+          <ion-button expand="block" class="btn-modal">Entrar</ion-button>
+        </div>
+      </ng-template>
+    </ion-modal>
+
   </div>
 </ion-content>

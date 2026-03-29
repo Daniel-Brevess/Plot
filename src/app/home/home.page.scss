@@ -1,27 +1,112 @@
-#container {
+// Container principal para centralizar tudo
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #E6D5B8; // O bege do fundo do Figma
+  padding: 20px;
+}
+
+// Estilo do Logo (O "P" grande)
+.logo-box {
+  margin-bottom: 40px;
+  .logo-text {
+    font-size: 150px;
+    font-family: 'serif'; // Use uma fonte serifada para o estilo clássico
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+  }
+}
+
+// Texto de boas-vindas
+.welcome-title {
+  color: #4A2C21; // Marrom escuro
+  font-weight: 800;
+  font-size: 1.8rem;
+  margin-bottom: 50px;
   text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+// Grupo de botões
+.button-group {
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; // Espaçamento entre os botões
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+// Estilo comum para os botões
+ion-button {
+  --border-radius: 15px;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  height: 55px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: none; // Tira o caps lock automático
+  
+  &.btn-primary, &.btn-secondary {
+    --background: #4A2C21; // Cor marrom dos botões
+    --color: #ffffff;
+    --background-activated: #351f18; // Cor ao clicar
+  }
 
-  color: #8c8c8c;
-
-  margin: 0;
+  // Efeito de hover suave
+  transition: transform 0.2s ease;
+  &:hover {
+    transform: scale(1.02);
+  }
 }
 
-#container a {
-  text-decoration: none;
+// Remove a barra de rolagem visual se necessário
+ion-content {
+  --background: #E6D5B8;
+}
+
+// Estilo dos Modais (Cards que sobem)
+ion-modal {
+  --background: #F5E8D3; // Bege um pouco mais claro para o card
+  --border-radius: 30px 30px 0 0;
+  --box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  
+  h3 {
+    color: #4A2C21;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}
+
+// Estilo dos Inputs para combinarem com o tema
+.custom-input {
+  --background: #ffffff;
+  --border-radius: 12px;
+  --padding-start: 15px;
+  margin-bottom: 5px;
+  border: 1px solid #D7C4A5;
+  
+  ion-input {
+    --placeholder-color: #8c7b6c;
+    color: #4A2C21;
+  }
+}
+
+// Botão dentro do modal
+.btn-modal {
+  --background: #4A2C21;
+  --color: white;
+  --border-radius: 12px;
+  margin-top: 10px;
+  height: 50px;
+  font-weight: bold;
 }
