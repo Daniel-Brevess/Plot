@@ -1,0 +1,72 @@
+<ion-content class="ion-padding">
+  <div class="modal-content">
+    <h3>Questionário de Preferências</h3>
+
+    <!-- Pergunta: gêneros (multi-select com chips) -->
+    <div>
+      <label class="welcome-title"><strong>Gêneros favoritos</strong></label>
+      <div class="genre-chips">
+        <ion-chip *ngFor="let g of genres" (click)="toggleGenre(g)" [class.selected]="isSelected(g)">
+          <ion-label>{{ g }}</ion-label>
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- Pergunta: autores favoritos (texto livre) -->
+    <div>
+      <label class="welcome-title"><strong>Autores favoritos</strong></label>
+      <ion-item class="custom-input">
+        <ion-input placeholder="Ex: Machado de Assis, J. K. Rowling" [(ngModel)]="form.authors"></ion-input>
+      </ion-item>
+    </div>
+
+    <!-- Pergunta: formato preferido -->
+    <div>
+      <label class="welcome-title"><strong>Formato preferido</strong></label>
+      <ion-segment [(ngModel)]="form.format">
+        <ion-segment-button value="fisico">Físico</ion-segment-button>
+        <ion-segment-button value="ebook">E-book</ion-segment-button>
+        <ion-segment-button value="audiobook">Audiobook</ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <!-- Pergunta: frequência de leitura -->
+    <div>
+      <label class="welcome-title"><strong>Frequência de leitura</strong></label>
+      <ion-range min="0" max="30" step="1" snaps="true" [(ngModel)]="form.monthlyBooks">
+        <ion-label slot="start">0</ion-label>
+        <ion-label slot="end">30+</ion-label>
+      </ion-range>
+      <div style="text-align:center;color:#4A2C21;font-weight:600">
+        {{ form.monthlyBooks }} livros / mês
+      </div>
+    </div>
+
+    <!-- Pergunta: temas / tags (checkbox estilo) -->
+    <div>
+      <label class="welcome-title"><strong>Temas que você gosta</strong></label>
+      <div class="tags-grid">
+        <ion-item lines="none" *ngFor="let t of tags">
+          <ion-checkbox slot="start" [(ngModel)]="t.checked"></ion-checkbox>
+          <ion-label>{{ t.name }}</ion-label>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Pergunta: livro favorito (texto curto) -->
+    <div>
+      <label class="welcome-title"><strong>Livro favorito (opcional)</strong></label>
+      <ion-item class="custom-input">
+        <ion-input placeholder="Título do livro" [(ngModel)]="form.favoriteBook"></ion-input>
+      </ion-item>
+    </div>
+
+    <!-- Botões -->
+    <ion-button class="btn-modal" expand="block" (click)="submit()" [disabled]="submitting">
+      Salvar e continuar
+    </ion-button>
+  </div>
+</ion-content>
+
+
+
