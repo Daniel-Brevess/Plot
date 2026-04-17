@@ -1,7 +1,0 @@
-{
-  "name": "plot-app",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular-standalone"
-}
