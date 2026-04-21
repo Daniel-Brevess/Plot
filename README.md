@@ -1,5 +1,5 @@
 # 📚 Plot - Seu Guia Literário  
-Status do Projeto: 🚀 Em Desenvolvimento (Sprint 2 - Integração Firebase)
+Status do Projeto: 🚀 Em Desenvolvimento
 
 ## 📖 Sobre o Plot
 O Plot é um aplicativo móvel desenvolvido com Ionic e Angular, focado em oferecer uma experiência personalizada para leitores. O objetivo é permitir que usuários descubram novos livros através de uma API e gerenciem suas preferências literárias de forma intuitiva.
