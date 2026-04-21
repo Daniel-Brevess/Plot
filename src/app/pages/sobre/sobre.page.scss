@@ -1,0 +1,100 @@
+.sobre-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px;
+  background-color: #E6D5B8;
+  min-height: 100%;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 40px;
+
+  .logo-mini {
+    background-color: #4A2C21;
+    color: white;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 24px;
+    margin: 0 auto 15px;
+  }
+
+  .sobre-title {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .plot-description {
+    color: #351f18;
+    font-size: 14px;
+    line-height: bold;
+    margin-top: 15px;
+  }
+}
+
+.team-title {
+  color: white;
+  align-self: flex-start;
+  font-size: 20px;
+  margin-bottom: 20px;
+  border-left: 4px solid #4A2C21;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+// Configuração do Scroll Horizontal
+.members-scroll {
+  display: flex;
+  overflow-x: auto;
+  width: 100%;
+  gap: 20px;
+  padding-bottom: 20px;
+  scrollbar-width: none; // Esconde barra no Firefox
+
+  &::-webkit-scrollbar {
+    display: none; // Esconde barra no Chrome/Safari
+  }
+}
+
+.member-card {
+  min-width: 200px;
+  background-color: #351f18;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid #333;
+
+  .avatar {
+    font-size: 40px;
+    background: #4A2C21;
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+  }
+
+  h3 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  p {
+    color: #8c7b6c;
+    font-size: 13px;
+  }
+}
+
+.btn-back {
+  margin-top: auto;
+  color: #4A2C21;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 15px;
+}
