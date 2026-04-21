@@ -17,15 +17,15 @@
         <div class="modal-content">
           <h3>Criar Conta</h3>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="text" placeholder="Nome completo"></ion-input>
+            <ion-input type="text" [(ngModel)]="nome" labelPlacement="floating" placeholder="Nome completo"></ion-input>
           </ion-item>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="email" placeholder="E-mail"></ion-input>
+            <ion-input type="email" [(ngModel)]="email" labelPlacement="floating" placeholder="E-mail"></ion-input>
           </ion-item>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="password" placeholder="Senha"></ion-input>
+            <ion-input type="password" [(ngModel)]="senha" labelPlacement="floating" placeholder="Senha"></ion-input>
           </ion-item>
-          <ion-button expand="block" class="btn-modal">Cadastrar</ion-button>
+          <ion-button (click)="cadastrar()" expand="block" class="btn-modal">Cadastrar</ion-button>
         </div>
       </ng-template>
     </ion-modal>
@@ -35,12 +35,12 @@
         <div class="modal-content">
           <h3>Acessar Plot</h3>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="email" placeholder="E-mail"></ion-input>
+            <ion-input type="email" [(ngModel)]="email" labelPlacement="floating" placeholder="E-mail"></ion-input>
           </ion-item>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="password" placeholder="Senha"></ion-input>
+            <ion-input type="password" [(ngModel)]="senha" labelPlacement="floating"placeholder="Senha"></ion-input>
           </ion-item>
-          <ion-button expand="block" class="btn-modal">Entrar</ion-button>
+          <ion-button (click)="login()" expand="block" class="btn-modal">Entrar</ion-button>
         </div>
       </ng-template>
     </ion-modal>
