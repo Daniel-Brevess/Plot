@@ -12,14 +12,11 @@
 // Estilo do Logo (O "P" grande)
 .logo-box {
   margin-bottom: 40px;
-  .logo-text {
-    font-size: 150px;
-    font-family: 'serif'; // Use uma fonte serifada para o estilo clássico
-    font-weight: bold;
-    color: #000;
-    margin: 0;
+  .logo-img {
+    width: 150px;
+    height: auto;
   }
-}
+  }
 
 // Texto de boas-vindas
 .welcome-title {
