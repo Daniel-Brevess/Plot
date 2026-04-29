@@ -32,6 +32,6 @@ export const routes: Routes = [
   },
   {
     path: 'sobre',
-    loadComponent: () => import('./pages/sobre/sobre.page').then( m => m.SobrePage)
+    loadComponent: () => import('./sobre/sobre.page').then( m => m.SobrePage)
   },
 ];
