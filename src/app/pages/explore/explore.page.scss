@@ -1,0 +1,158 @@
+/*
+  .books-page:
+  Classe aplicada diretamente no ion-content.
+  Aqui usamos a variável --background do Ionic para trocar
+  o fundo padrão da tela inteira.
+*/
+.books-page {
+    --background: #e8dbc2;
+  }
+  
+  /*
+    .page-wrapper:
+    Caixa principal que envolve todo o conteúdo.
+    Define margem externa, espaçamento interno, cor de fundo,
+    borda e arredondamento.
+  */
+  .page-wrapper {
+    margin: 20px;                  // Espaço entre a caixa e as bordas da tela
+    padding: 14px;                 // Espaço interno entre a borda e o conteúdo
+    background: #e6d7bc;           // Fundo bege da área central
+    border: 1px solid #bfae8f;     // Borda fina em tom marrom claro
+    border-radius: 16px;           // Arredonda os cantos da caixa principal
+  }
+  
+  /*
+    .tabs:
+    Linha superior com os 3 botões.
+    Usamos flex para deixá-los alinhados horizontalmente.
+  */
+  .tabs {
+    display: flex;                         // Coloca os elementos lado a lado
+    justify-content: space-around;         // Distribui os botões com espaço equilibrado
+    align-items: center;                   // Alinha verticalmente os botões
+    padding-bottom: 10px;                  // Espaço abaixo das abas
+    border-bottom: 1px solid #b08f6a;      // Linha separando o topo da lista
+    margin-bottom: 8px;                    // Espaço entre as abas e a lista de livros
+  }
+  
+  /*
+    .tab:
+    Estilo base de cada botão da aba.
+  */
+  .tab {
+    background: transparent;   // Remove cor de fundo do botão
+    border: none;              // Remove a borda padrão do botão
+    font-size: 18px;           // Tamanho da fonte
+    color: #2d1d12;            // Cor do texto
+    padding: 8px 4px;          // Espaço interno do botão
+    position: relative;        // Necessário para posicionar o ::after da aba ativa
+  }
+  
+  /*
+    .tab.active:
+    Aplica destaque ao botão da aba selecionada.
+  */
+  .tab.active {
+    font-weight: 700;          // Deixa o texto em negrito
+  }
+  
+  /*
+    .tab.active::after:
+    Cria a barrinha escura abaixo da aba ativa.
+    Isso simula exatamente o detalhe visual da imagem.
+  */
+  .tab.active::after {
+    content: '';               // Necessário para o pseudo-elemento existir
+    position: absolute;        // Posicionamento livre dentro do botão
+    left: 0;                   // Encosta na esquerda
+    bottom: -11px;             // Joga a barrinha para baixo do texto
+    width: 100%;               // Faz a barrinha ocupar toda a largura do botão
+    height: 3px;               // Espessura da barrinha
+    background: #1f140d;       // Cor escura da barrinha
+    border-radius: 2px;        // Leve arredondamento
+  }
+  
+  /*
+    .books-list:
+    Área que contém todos os cards.
+    O flex-direction: column empilha um card abaixo do outro.
+  */
+  .books-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /*
+    .book-card:
+    Cada livro ocupa uma linha com imagem à esquerda
+    e informações à direita.
+  */
+  .book-card {
+    display: flex;                       // Coloca imagem e texto lado a lado
+    gap: 12px;                           // Espaço entre imagem e conteúdo
+    padding: 14px 0;                     // Espaço acima e abaixo de cada card
+    border-bottom: 1px solid #b08f6a;    // Linha separando um livro do outro
+  
+    /*
+      &:last-child:
+      Remove a linha do último item da lista.
+      Isso evita uma borda sobrando no final.
+    */
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  
+  /*
+    .book-image:
+    Define o tamanho e o comportamento da capa do livro.
+  */
+  .book-image {
+    width: 78px;                         // Largura fixa da imagem
+    height: 110px;                       // Altura fixa da imagem
+    object-fit: cover;                   // Faz a imagem preencher sem distorcer
+    border-radius: 14px;                 // Arredonda os cantos da capa
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25); // Sombra para destacar a capa
+    flex-shrink: 0;                      // Impede a imagem de encolher no flex
+  }
+  
+  /*
+    .book-info:
+    Área textual do card.
+  */
+  .book-info {
+    /*
+      h2:
+      Estilo do título do livro.
+    */
+    h2 {
+      margin: 0 0 8px;          // Remove margem superior e cria espaço abaixo
+      font-size: 16px;          // Tamanho do título
+      font-weight: 600;         // Peso da fonte
+      color: #7a3d2a;           // Tom marrom avermelhado
+      line-height: 1.2;         // Altura entre linhas
+    }
+  
+    /*
+      p:
+      Estilo da descrição do livro.
+    */
+    p {
+      margin: 8px 0 0;          // Espaço acima do parágrafo
+      font-size: 14px;          // Fonte menor que o título
+      color: #1e1a17;           // Cor mais escura para leitura
+      line-height: 1.35;        // Espaçamento entre linhas
+    }
+  }
+  
+  /*
+    .stars:
+    Área das estrelas.
+  */
+  .stars {
+    display: flex;              // Coloca as estrelas em linha
+    gap: 4px;                   // Espaço entre elas
+    color: #d7d019;             // Cor amarela das estrelas
+    font-size: 18px;            // Tamanho do ícone
+  }

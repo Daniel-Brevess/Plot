@@ -1,0 +1,116 @@
+<!--
+  ion-content:
+  Componente do Ionic que cria a área principal da página.
+  Ele já vem preparado para rolagem vertical, o que é ideal
+  para telas com listas grandes, como esta de livros.
+-->
+<ion-content class="books-page">
+
+    <!--
+      page-wrapper:
+      Caixa principal que envolve todo o conteúdo visível da tela.
+      Ela funciona como um "cartão gigante" com fundo, borda e cantos arredondados.
+    -->
+    <div class="page-wrapper">
+  
+      <!--
+        tabs:
+        Área superior que imita um menu com 3 opções.
+        Neste exemplo, é apenas visual.
+        Depois você pode transformar isso em navegação real.
+      -->
+      <div class="tabs">
+  
+        <!--
+          Botão da primeira aba.
+          A classe "active" indica visualmente que esta é a aba selecionada.
+        -->
+        <button class="tab active">Pra você</button>
+  
+        <!-- Botão da segunda aba -->
+        <button class="tab">Explorar</button>
+  
+        <!-- Botão da terceira aba -->
+        <button class="tab">Perfil</button>
+      </div>
+  
+      <!--
+        books-list:
+        Área onde ficam todos os cards dos livros.
+        Cada item da lista "books" será desenhado automaticamente aqui.
+      -->
+      <div class="books-list">
+  
+        <!--
+          *ngFor:
+          Diretiva estrutural do Angular.
+          Ela repete este bloco de HTML para cada objeto presente no array "books".
+  
+          let book of books
+          = para cada livro do array "books", crie uma variável temporária chamada "book".
+  
+          Exemplo:
+          se houver 4 objetos em "books", este card será criado 4 vezes.
+        -->
+        <div class="book-card" *ngFor="let book of books">
+  
+          <!--
+            img:
+            Exibe a imagem da capa do livro.
+  
+            [src]="book.image"
+            = property binding.
+            O valor do atributo src será preenchido com o caminho da imagem
+            vindo do objeto atual da lista.
+  
+            [alt]="book.title"
+            = também é property binding.
+            Define o texto alternativo da imagem usando o título do livro.
+            Isso ajuda em acessibilidade.
+          -->
+          <img [src]="book.image" [alt]="book.title" class="book-image" />
+  
+          <!--
+            book-info:
+            Bloco que guarda as informações textuais do livro:
+            título, estrelas e descrição.
+          -->
+          <div class="book-info">
+  
+            <!--
+              {{ book.title }}
+              = interpolação do Angular.
+              Mostra na tela o valor da propriedade "title" do livro atual.
+            -->
+            <h2>{{ book.title }}</h2>
+  
+            <!--
+              stars:
+              Área onde ficarão as estrelas de avaliação.
+            -->
+            <div class="stars">
+  
+              <!--
+                ion-icon:
+                Componente do Ionic para exibir ícones.
+  
+                name="star"
+                = escolhe o ícone chamado "star".
+  
+                *ngFor="let star of [1,2,3,4,5]"
+                = repete o ícone 5 vezes.
+                Aqui criamos uma lista manual só para desenhar 5 estrelas.
+              -->
+              <ion-icon name="star" *ngFor="let star of [1, 2, 3, 4, 5]"></ion-icon>
+            </div>
+  
+            <!--
+              {{ book.description }}
+              = interpolação do Angular para mostrar a descrição do livro.
+            -->
+            <p>{{ book.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-content>
