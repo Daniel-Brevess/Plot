@@ -5,6 +5,7 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 // --- Ajuste nos Imports para o padrão AngularFire ---
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
@@ -19,5 +20,7 @@ bootstrapApplication(AppComponent, {
     // --- O "Aperto de Mão" Oficial acontece aqui dentro ---
     provideFirebaseApp(() => initializeApp(environment)),
     provideAuth(() => getAuth()),
+
+    provideFirestore(() => getFirestore()),
   ],
 });

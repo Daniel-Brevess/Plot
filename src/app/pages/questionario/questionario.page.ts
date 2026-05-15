@@ -1,19 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router'; 
+import { AuthService } from '../../services/auth'; // Caminho do seu serviço
 import {
   IonContent,
   IonHeader,
   IonTitle,
   IonToolbar,
-  IonChip,
   IonLabel,
-  IonItem,
-  IonInput,
-  IonSegment,
-  IonSegmentButton,
-  IonRange,
-  IonCheckbox,
   IonButton
 } from '@ionic/angular/standalone';
 
@@ -27,14 +22,7 @@ import {
     IonHeader,
     IonTitle,
     IonToolbar,
-    IonChip,
     IonLabel,
-    IonItem,
-    IonInput,
-    IonSegment,
-    IonSegmentButton,
-    IonRange,
-    IonCheckbox,
     IonButton,
     CommonModule,
     FormsModule
@@ -42,68 +30,74 @@ import {
 })
 export class QuestionarioPage implements OnInit {
 
-  // Lista de gêneros disponíveis
-  genres: string[] = ['Romance', 'Ficção', 'Fantasia', 'Suspense', 'Biografia', 'História'];
-
-  // Lista de tags/temas
-  tags = [
-    { name: 'Aventura', checked: false },
-    { name: 'Mistério', checked: false },
-    { name: 'Ciência', checked: false },
-    { name: 'Filosofia', checked: false },
-    { name: 'Tecnologia', checked: false }
+  // Lista de gêneros (Paleta Plot)
+  genres: string[] = [
+    'Romance', 'Ficção Científica', 'Fantasia', 
+    'Terror', 'Biografia', 'História', 
+    'Suspense', 'Autoajuda', 'Poesia',
+    'Drama', 'Aventura', 'Clássicos'
   ];
 
-  // Estado do formulário
-  form: any = {
-    authors: '',
-    format: 'fisico',
-    monthlyBooks: 0,
-    favoriteBook: '',
+  form = {
     selectedGenres: [] as string[]
   };
 
   submitting = false;
 
-  constructor() { }
+  constructor(
+    private authService: AuthService, 
+    private router: Router
+  ) { }
 
   ngOnInit() { }
 
-  // Alterna seleção de um gênero
+  // Seleção limitada a exatamente 3
   toggleGenre(g: string) {
     const index = this.form.selectedGenres.indexOf(g);
+    
     if (index > -1) {
       this.form.selectedGenres.splice(index, 1);
     } else {
-      this.form.selectedGenres.push(g);
+      if (this.form.selectedGenres.length < 3) {
+        this.form.selectedGenres.push(g);
+      }
     }
   }
 
-  // Verifica se o gênero está selecionado
   isSelected(g: string): boolean {
     return this.form.selectedGenres.includes(g);
   }
 
-  // Submissão do formulário
-  submit() {
+  // Submissão utilizando o método getUsuarioAtual()
+  async submit() {
+    if (this.form.selectedGenres.length !== 3) {
+      return;
+    }
+
     this.submitting = true;
 
-    // Aqui você pode enviar os dados para uma API ou salvar localmente
-    console.log('Formulário enviado:', {
-      genres: this.form.selectedGenres,
-      authors: this.form.authors,
-      format: this.form.format,
-      monthlyBooks: this.form.monthlyBooks,
-      tags: this.tags.filter(t => t.checked).map(t => t.name),
-      favoriteBook: this.form.favoriteBook
-    });
+    try {
+      // Chamada ao método que criámos no AuthService
+      const usuario = this.authService.getUsuarioAtual();
 
-    // Simulação de finalização
-    setTimeout(() => {
+      if (usuario && usuario.uid) {
+        // Gravação no Firestore
+      await this.authService.salvarPreferencias(usuario.uid, this.form.selectedGenres);
+
+      console.log('Preferências salvas com sucesso no Firestore!');
+
+      // Navega para o feed e limpa o histórico para o usuário não voltar ao questionário
+      this.router.navigate(['/feed'], { replaceUrl: true });
+      } else {
+        console.error('Usuário não identificado pelo AuthService');
+        alert('Sessão inválida. Por favor, faça login novamente.');
+        this.router.navigate(['/home']);
+      }
+    } catch (err) {
+      console.error('Erro ao persistir preferências:', err);
+      alert('Erro ao guardar as suas escolhas. Tente novamente.');
+    } finally {
       this.submitting = false;
-      alert('Preferências salvas com sucesso!');
-    }, 1000);
+    }
   }
 }
-
-

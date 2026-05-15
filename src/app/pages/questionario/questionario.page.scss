@@ -1,84 +1,80 @@
 :host {
   display: block;
   height: 100%;
-  --ion-background-color: #E6D5B8;
+  // Mantive o seu bege de fundo
+  --ion-background-color: #E6D5B8; 
 }
 
-.modal-content {
-  background: var(--ion-background, #F5E8D3);
-  border-radius: 20px;
-  padding: 28px;
-  margin: 18px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  color: #4A2C21;
+.container-questionario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
 }
 
 .welcome-title {
   color: #4A2C21;
   font-weight: 800;
-  font-size: 1rem;
-  margin: 8px 0 10px 0;
-  display: block;
-}
-
-.genre-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  font-size: 1.4rem;
   margin-bottom: 8px;
+  text-align: center;
 }
 
-ion-chip {
-  --background: #ffffff;
-  --color: #4A2C21;
-  border: 1px solid #D7C4A5;
-  --border-radius: 12px;
-  padding: 6px 10px;
-  cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+.subtitle {
+  color: #4A2C21;
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-bottom: 24px;
+  text-align: center;
 }
 
-ion-chip.selected {
-  --background: #4A2C21;
-  --color: #fff;
-  box-shadow: 0 6px 12px rgba(74, 44, 33, 0.18);
-  transform: translateY(-2px);
-}
-
-.tags-grid {
+/* Grid de botões de Gênero */
+.genre-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 6px;
-  margin-bottom: 6px;
+  grid-template-columns: repeat(2, 1fr); // 2 botões por linha
+  gap: 12px;
+  width: 100%;
+  max-width: 500px; // Evita que fique largo demais no desktop
 }
 
-ion-item.custom-input {
-  --background: #ffffff;
-  --border-radius: 12px;
+/* Estilo do Botão de Gênero (Parecido com seu ion-chip antigo) */
+.genre-button {
+  background: #ffffff;
+  color: #4A2C21;
   border: 1px solid #D7C4A5;
-  margin-bottom: 6px;
-}
+  border-radius: 12px; // O arredondamento leve que você pediu
+  padding: 16px 10px;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 
-ion-range {
-  --bar-background: #D7C4A5;
-  --knob-background: #4A2C21;
-  margin: 6px 0 2px 0;
-}
-
-.btn-modal {
-  --background: #4A2C21;
-  --color: #ffffff;
-  --border-radius: 12px;
-  height: 50px;
-  font-weight: 700;
-  margin-top: 12px;
-}
-
-@media (min-width: 720px) {
-  .modal-content {
-    max-width: 640px;
-    margin-left: auto;
-    margin-right: auto;
+  /* Quando selecionado: Fundo Marrom Escuro */
+  &.selected {
+    background: #4A2C21;
+    color: #ffffff;
+    border-color: #4A2C21;
+    box-shadow: 0 6px 12px rgba(74, 44, 33, 0.18);
+    transform: translateY(-2px);
   }
 }
 
+.counter-info {
+  margin: 24px 0;
+  font-weight: 700;
+  color: #4A2C21;
+  font-size: 0.9rem;
+}
+
+/* Botão de Finalizar (Seguindo seu padrão btn-modal) */
+.btn-finalizar {
+  --background: #4A2C21;
+  --color: #ffffff;
+  --border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  height: 54px;
+  font-weight: 700;
+  margin-top: 10px;
+}

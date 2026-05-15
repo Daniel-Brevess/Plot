@@ -1,0 +1,85 @@
+:host {
+  --ion-background-color: #E6D5B8; // O bege do fundo
+}
+
+.custom-nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0 10px 0;
+  background: #E6D5B8;
+  
+  .nav-item {
+    font-size: 1.1rem;
+    color: #4A2C21;
+    font-weight: 500;
+    opacity: 0.7;
+    cursor: pointer;
+
+    &.active {
+      opacity: 1;
+      font-weight: 800;
+      border-bottom: 3px solid #4A2C21;
+    }
+  }
+}
+
+.feed-container {
+  padding: 10px 20px;
+}
+
+.book-card {
+  display: flex;
+  gap: 15px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(74, 44, 33, 0.2);
+  align-items: flex-start;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.book-cover-container {
+  flex-shrink: 0;
+  
+  .book-cover {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    // Sombra para dar o efeito de livro real
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+  
+  .book-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #8D4925; // Marrom avermelhado do título
+  }
+
+  .stars {
+    margin: 5px 0;
+    ion-icon {
+      color: #000; // Estrelas pretas conforme a imagem
+      font-size: 1.2rem;
+      margin-right: 2px;
+    }
+  }
+
+  .book-description {
+    margin: 5px 0 0 0;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #4A2C21;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; // Limita a 3 linhas como no design
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
