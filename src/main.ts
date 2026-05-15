@@ -1,8 +1,8 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { provideHttpClient } from '@angular/common/http'; // Importante!
 
-// --- Ajuste nos Imports para o padrão AngularFire ---
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
@@ -16,11 +16,10 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideHttpClient(), // Habilita o serviço de requisições HTTP
     
-    // --- O "Aperto de Mão" Oficial acontece aqui dentro ---
     provideFirebaseApp(() => initializeApp(environment)),
     provideAuth(() => getAuth()),
-
     provideFirestore(() => getFirestore()),
   ],
 });

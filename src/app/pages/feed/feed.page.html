@@ -1,14 +1,10 @@
-<ion-header class="ion-no-border">
-  <div class="custom-nav">
-    <span class="nav-item active">Pra você</span>
-    <span class="nav-item" (click)="irParaExplorar()">Explorar</span>
-    <span class="nav-item" (click)="irParaPerfil()">Perfil</span>
-  </div>
-</ion-header>
-
 <ion-content>
-  <div class="feed-container">
-    
+  <div *ngIf="loading" class="ion-text-center" style="margin-top: 50px;">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Buscando livros baseados no seu perfil...</p>
+  </div>
+
+  <div class="feed-container" *ngIf="!loading">
     <div class="book-card" *ngFor="let livro of livros">
       <div class="book-cover-container">
         <img [src]="livro.capa" class="book-cover" alt="Capa do livro">
@@ -26,6 +22,9 @@
         </p>
       </div>
     </div>
-
+    
+    <div *ngIf="livros.length === 0" class="ion-text-center">
+      <p>Nenhuma recomendação encontrada para seus gêneros.</p>
+    </div>
   </div>
 </ion-content>
