@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
+import { GoogleSignIn } from '@capawesome/capacitor-google-sign-in';
+import { Capacitor } from '@capacitor/core';
 import { 
   Auth, 
   createUserWithEmailAndPassword, 
+  signInWithCredential,
   signInWithEmailAndPassword, 
   signInWithPopup, 
   GoogleAuthProvider, 
@@ -17,6 +20,7 @@ import {
   getDoc 
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +28,7 @@ import { Observable } from 'rxjs';
 export class AuthService {
   // Observable para monitorar o estado da autenticação em tempo real
   user$: Observable<User | null>;
+  private googleSignInInitialized = false;
 
   constructor(
     public auth: Auth, // Deixamos como public para o Questionário acessar .currentUser
@@ -64,16 +69,46 @@ export class AuthService {
   /**
    * Login/Cadastro via Google
    */
-  loginComGoogle() {
+  async loginComGoogle() {
     const provider = new GoogleAuthProvider();
+
+    if (Capacitor.getPlatform() !== 'web') {
+      await this.initializeNativeGoogleSignIn();
+      const result = await GoogleSignIn.signIn();
+      const credential = GoogleAuthProvider.credential(result.idToken);
+
+      return signInWithCredential(this.auth, credential);
+    }
+
     return signInWithPopup(this.auth, provider);
   }
 
   /**
    * Finaliza a sessão
    */
-  logout() {
-    return signOut(this.auth);
+  async logout() {
+    await signOut(this.auth);
+
+    if (Capacitor.getPlatform() !== 'web' && environment.googleWebClientId) {
+      await this.initializeNativeGoogleSignIn();
+      await GoogleSignIn.signOut();
+    }
+  }
+
+  private async initializeNativeGoogleSignIn() {
+    if (this.googleSignInInitialized) {
+      return;
+    }
+
+    if (!environment.googleWebClientId) {
+      throw new Error('Configure environment.googleWebClientId para habilitar o login Google no APK.');
+    }
+
+    await GoogleSignIn.initialize({
+      clientId: environment.googleWebClientId
+    });
+
+    this.googleSignInInitialized = true;
   }
 
   /**

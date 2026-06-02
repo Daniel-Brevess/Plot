@@ -6,5 +6,6 @@ export const environment = {
   storageBucket: "plot-570f8.firebasestorage.app",
   messagingSenderId: "955297535767",
   appId: "1:955297535767:web:ea2605c9bc83b410104952",
-  measurementId: "G-Q5LKX6H9G5"
+  measurementId: "G-Q5LKX6H9G5",
+  googleWebClientId: ""
 };

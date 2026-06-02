@@ -117,6 +117,7 @@ export class HomePage implements OnInit {
       await this.direcionarUsuario(credential.user.uid);
     } catch (err) {
       console.error('Erro no Google:', err);
+      alert('Não foi possível entrar com o Google. Verifique a configuração do aplicativo ou tente novamente.');
     }
   }
 }
