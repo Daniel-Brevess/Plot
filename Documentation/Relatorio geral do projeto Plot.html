@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Relatorio geral do projeto Plot</title>
+  <style>
+    @page { size: A4; margin: 16mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: #2f211b;
+      font: 12px/1.45 Arial, sans-serif;
+      background: #fff;
+    }
+    h1, h2, h3 { color: #5a321f; margin: 0; }
+    h1 { font-size: 25px; }
+    h2 {
+      margin-top: 20px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid #b98e6b;
+      font-size: 17px;
+    }
+    h3 { margin-top: 12px; font-size: 14px; }
+    p { margin: 6px 0; }
+    ul { margin: 6px 0 8px; padding-left: 20px; }
+    li { margin: 4px 0; }
+    .cover {
+      min-height: 250mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      page-break-after: always;
+    }
+    .cover .logo {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 18px;
+      border-radius: 18px;
+      color: #fff;
+      background: #5a321f;
+      font: bold 52px/76px Georgia, serif;
+    }
+    .cover .subtitle { margin-top: 10px; color: #73533f; font-size: 15px; }
+    .cover .meta { margin-top: 50px; color: #73533f; }
+    .box {
+      margin: 10px 0;
+      padding: 9px 12px;
+      border-left: 4px solid #b98e6b;
+      background: #f7efe5;
+    }
+    .done { color: #6d6d6d; text-decoration: line-through; }
+    .pending { color: #2f211b; }
+    .partial { color: #8a541f; font-weight: bold; }
+    .tag {
+      display: inline-block;
+      margin-right: 5px;
+      padding: 1px 6px;
+      border-radius: 9px;
+      font-size: 10px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .tag-done { color: #315b31; background: #dcebd9; }
+    .tag-partial { color: #7a4a17; background: #f6e2bc; }
+    .tag-pending { color: #7a2929; background: #f3d7d7; }
+    .page-break { page-break-before: always; }
+    .small { color: #73533f; font-size: 11px; }
+    .priority { font-weight: bold; }
+    code { font: 11px Consolas, monospace; }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div class="logo">P</div>
+    <h1>Relatorio geral do projeto Plot</h1>
+    <p class="subtitle">Checklist consolidado da documentacao, dos slides e da implementacao atual</p>
+    <p class="meta">Gerado em 2 de junho de 2026<br>Projeto academico de Analise e Desenvolvimento de Sistemas</p>
+  </section>
+
+  <h2>Como ler este documento</h2>
+  <div class="box">
+    <p><span class="done">Texto riscado</span>: item ja implementado ou confirmado no projeto.</p>
+    <p><span class="pending">Texto sem risco</span>: item que ainda falta implementar, revisar ou corrigir.</p>
+    <p><span class="partial">Item parcial</span>: possui uma parte pronta e outra parte pendente. As subtarefas mostram a divisao.</p>
+  </div>
+
+  <h2>Resumo atual</h2>
+  <p>O Plot ja possui uma base demonstravel: autenticacao, questionario de generos, recomendacoes por API, navegacao principal, perfil editavel e APK Android atualizado. A maior parte das pendencias vem de recursos anunciados nos slides antes de serem implementados.</p>
+  <ul>
+    <li class="done">Aplicativo Ionic e Angular estruturado e compilando.</li>
+    <li class="done">APK Android atualizado em <code>apk/app-debug.apk</code>.</li>
+    <li class="done">Suite automatizada executando com 9 testes aprovados.</li>
+    <li class="pending">Corrigir os 12 erros restantes do lint.</li>
+    <li class="pending">Alinhar README e slides com o escopo realmente entregue.</li>
+  </ul>
+
+  <h2>Requisitos funcionais</h2>
+
+  <h3>Autenticacao e conta</h3>
+  <ul>
+    <li class="done">Cadastro de usuario com nome, e-mail e senha.</li>
+    <li class="done">Login com e-mail e senha.</li>
+    <li class="partial">Login com conta Google.
+      <ul>
+        <li class="done">Fluxo implementado para navegador com Firebase.</li>
+        <li class="pending">Validar e adaptar o fluxo para funcionamento confiavel dentro do APK Android.</li>
+      </ul>
+    </li>
+    <li class="done">Manutencao de sessao e redirecionamento automatico de usuario autenticado.</li>
+    <li class="partial">Logout do sistema.
+      <ul>
+        <li class="done">Metodo de logout criado no servico de autenticacao.</li>
+        <li class="pending">Adicionar botao de sair na interface e redirecionar para a tela inicial.</li>
+      </ul>
+    </li>
+    <li class="pending">Recuperacao de senha.</li>
+    <li class="pending">Protecao de rotas para impedir acesso direto ao feed, perfil e questionario sem login.</li>
+  </ul>
+
+  <h3>Preferencias e recomendacoes</h3>
+  <ul>
+    <li class="done">Questionario com selecao de exatamente tres generos literarios.</li>
+    <li class="done">Persistencia das preferencias do usuario no Firestore.</li>
+    <li class="done">Feed personalizado com livros carregados conforme os generos escolhidos.</li>
+    <li class="done">Consumo da API gratuita Open Library.</li>
+    <li class="done">Exibicao de titulo, autor e capa quando fornecidos pela API.</li>
+    <li class="pending">Adicionar uma imagem padrao existente quando a API nao retornar capa.</li>
+    <li class="pending">Trocar ou mapear o genero "Classicos", pois a consulta atual nao retorna livros.</li>
+    <li class="pending">Exibir sinopse real dos livros.</li>
+    <li class="pending">Exibir avaliacoes reais ou remover as estrelas decorativas.</li>
+    <li class="pending">Implementar busca de livros por texto.</li>
+    <li class="pending">Implementar paginacao ou carregamento progressivo para listas maiores.</li>
+  </ul>
+
+  <h3>Navegacao e exploracao</h3>
+  <ul>
+    <li class="done">Navegacao entre feed, explorar e perfil.</li>
+    <li class="done">Pagina Explorar registrada nas rotas e carregando livros da API.</li>
+    <li class="partial">Pagina Explorar.
+      <ul>
+        <li class="done">Lista inicial funcional usando livros de romance.</li>
+        <li class="pending">Adicionar filtros, busca ou escolha de genero para que a pagina seja realmente exploratoria.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>Perfil</h3>
+  <ul>
+    <li class="done">Perfil exibindo nome e e-mail do usuario autenticado.</li>
+    <li class="done">Edicao do nome persistida no Firebase Authentication e no Firestore.</li>
+    <li class="done">Selecao de foto salva localmente por usuario no aparelho.</li>
+    <li class="pending">Definir se o e-mail tambem podera ser alterado e implementar a atualizacao no Firebase.</li>
+    <li class="pending">Substituir os favoritos fixos exibidos no perfil por dados reais.</li>
+  </ul>
+
+  <h3>Favoritos e avaliacoes</h3>
+  <ul>
+    <li class="pending">Implementar botao para favoritar e desfavoritar livros.</li>
+    <li class="pending">Persistir favoritos por usuario no Firestore.</li>
+    <li class="pending">Listar favoritos reais no perfil.</li>
+    <li class="pending">Definir a fonte das avaliacoes agregadas ou remover esse requisito do slide.</li>
+  </ul>
+
+  <div class="page-break"></div>
+  <h2>Armazenamento e recursos nativos</h2>
+  <ul>
+    <li class="done">Firebase Authentication configurado.</li>
+    <li class="done">Firestore usado para preferencias e dados basicos do perfil.</li>
+    <li class="done">Uso simples de armazenamento local para a foto do perfil.</li>
+    <li class="pending">Ionic Storage, Preferences e SQLite citados no slide nao estao implementados. Implementar somente se forem realmente necessarios ou remover do slide.</li>
+    <li class="pending">Filesystem com arquivos CSV e JSON citado no slide nao esta implementado. Implementar ou remover do slide.</li>
+    <li class="pending">Criar e incluir o modelo ER anunciado no slide, caso ele faca parte da entrega.</li>
+    <li class="partial">Vibracao com Capacitor Haptics.
+      <ul>
+        <li class="done">Plugin instalado no projeto.</li>
+        <li class="pending">Usar o plugin em alguma interacao ou remover a afirmacao de uso.</li>
+      </ul>
+    </li>
+    <li class="pending">Camera citada no slide nao esta instalada nem utilizada. Implementar ou apresentar como trabalho futuro.</li>
+  </ul>
+
+  <h2>Qualidade tecnica</h2>
+  <ul>
+    <li class="done">Build web concluido com sucesso.</li>
+    <li class="done">Build Android concluido com sucesso.</li>
+    <li class="done">APK Android atualizado apos as correcoes.</li>
+    <li class="done">Testes unitarios destravados: 9 testes aprovados.</li>
+    <li class="pending">Corrigir 12 erros de lint restantes: migrar injecoes antigas para <code>inject()</code> e remover ciclos de vida vazios.</li>
+    <li class="pending">Remover imports Ionic nao utilizados apontados como avisos durante o build.</li>
+    <li class="pending">Adicionar testes comportamentais para login, questionario, feed, perfil e edicao de perfil. Os testes atuais verificam principalmente a criacao dos componentes.</li>
+    <li class="pending">Trocar o identificador Android generico <code>io.ionic.starter</code> por um identificador definitivo do Plot.</li>
+    <li class="pending">Trocar o nome nativo generico <code>plot-app</code> por um nome final de exibicao.</li>
+    <li class="pending">Usar uma versao LTS do Node.js em vez da versao impar v25 usada localmente.</li>
+  </ul>
+
+  <h2>Correcoes necessarias no README e nos slides</h2>
+  <ul>
+    <li class="pending">Corrigir a codificacao do README: os acentos e emojis aparecem corrompidos em alguns leitores.</li>
+    <li class="pending">Atualizar o slide de resultados: busca, favoritos e avaliacoes ainda nao podem ser apresentados como recursos concluidos.</li>
+    <li class="pending">Atualizar o slide de requisitos ou separar claramente "implementado", "em desenvolvimento" e "trabalho futuro".</li>
+    <li class="pending">Corrigir a contradicao entre "consumo passivo de conteudo" e os recursos interativos anunciados, como perfil editavel e favoritos.</li>
+    <li class="pending">Corrigir a descricao da API: Open Library e gratuita e a integracao atual nao usa API key.</li>
+    <li class="pending">Nao afirmar uso de paginacao enquanto ela nao estiver implementada.</li>
+    <li class="pending">Nao afirmar uso de camera, SQLite, Preferences, Ionic Storage ou Filesystem enquanto esses recursos nao estiverem implementados.</li>
+    <li class="pending">Revisar a afirmacao de Firebase Hosting: o projeto usa Authentication e Firestore, mas nao ha evidencia de hospedagem configurada.</li>
+    <li class="pending">Atualizar a tela "Sobre o Plot", que ainda promete favoritos antes da implementacao do recurso.</li>
+  </ul>
+
+  <h2>Ordem recomendada de trabalho</h2>
+  <ol>
+    <li><span class="priority">Fechar a demonstracao principal:</span> logout na interface, capa padrao, ajuste de "Classicos" e protecao de rotas.</li>
+    <li><span class="priority">Implementar o diferencial anunciado:</span> busca e favoritos reais persistidos no Firestore.</li>
+    <li><span class="priority">Decidir o escopo das avaliacoes:</span> integrar uma fonte confiavel ou retirar esse item da apresentacao.</li>
+    <li><span class="priority">Limpar a qualidade tecnica:</span> lint, avisos do build e testes comportamentais.</li>
+    <li><span class="priority">Atualizar a apresentacao:</span> mostrar como concluido somente o que pode ser demonstrado no APK.</li>
+  </ol>
+
+  <h2>Fontes analisadas</h2>
+  <ul class="small">
+    <li><code>README.md</code></li>
+    <li><code>Documentation/Slide app Rpojeto Plot V2.pptx</code></li>
+    <li>Codigo-fonte atual em <code>src/app</code></li>
+    <li>Configuracao atual do projeto e APK Android gerado</li>
+  </ul>
+</body>
+</html>
