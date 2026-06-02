@@ -41,6 +41,7 @@
     Estilo base de cada botão da aba.
   */
   .tab {
+    text-decoration: none;
     background: transparent;   // Remove cor de fundo do botão
     border: none;              // Remove a borda padrão do botão
     font-size: 18px;           // Tamanho da fonte

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonIcon, IonSpinner } from '@ionic/angular/standalone';
+import { RouterLink } from '@angular/router';
+import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { starOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth';
@@ -12,7 +13,7 @@ import { Firestore, doc, getDoc } from '@angular/fire/firestore';
   templateUrl: './feed.page.html',
   styleUrls: ['./feed.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonIcon, IonSpinner, CommonModule]
+  imports: [IonContent, IonIcon, IonSpinner, CommonModule, RouterLink]
 })
 export class FeedPage implements OnInit {
   
@@ -58,7 +59,4 @@ export class FeedPage implements OnInit {
       this.loading = false;
     }
   }
-
-  irParaExplorar() { /* navegação */ }
-  irParaPerfil() { /* navegação */ }
 }

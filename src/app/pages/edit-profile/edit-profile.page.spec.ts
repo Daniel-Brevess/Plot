@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { EditProfilePage } from './edit-profile.page';
-
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
-import { EditProfilePage } from './edit-profile.page';
+import { AuthService } from '../../services/auth';
 
 describe('EditProfilePage', () => {
   let component: EditProfilePage;
@@ -12,7 +10,17 @@ describe('EditProfilePage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ EditProfilePage, IonicModule.forRoot() ]
+      imports: [EditProfilePage, IonicModule.forRoot()],
+      providers: [
+        provideRouter([]),
+        {
+          provide: AuthService,
+          useValue: {
+            getUsuarioAtual: () => null,
+            atualizarPerfil: jasmine.createSpy('atualizarPerfil')
+          }
+        }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(EditProfilePage);

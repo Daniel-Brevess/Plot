@@ -2,15 +2,17 @@
   <div class="profile-header">
     <div class="top-actions">
       <ion-back-button defaultHref="/" text="" mode="md"></ion-back-button>
-      <ion-icon name="ellipsis-vertical" class="menu-icon"></ion-icon>
+      <a routerLink="/edit-profile" aria-label="Editar perfil">
+        <ion-icon name="create-outline" class="menu-icon"></ion-icon>
+      </a>
     </div>
 
     <div class="user-info">
       <div class="avatar-wrapper">
-        <img src="assets/perfil.jpg" alt="Daniel Breves" />
+        <img [src]="foto" [alt]="nome" />
       </div>
-      <h1 class="user-name">Daniel Breves</h1>
-      <p class="user-handle">@danielbreves</p>
+      <h1 class="user-name">{{ nome }}</h1>
+      <p class="user-handle">{{ email }}</p>
     </div>
 
     <div class="status-tags">

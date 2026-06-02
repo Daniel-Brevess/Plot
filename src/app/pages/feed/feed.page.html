@@ -1,4 +1,10 @@
 <ion-content>
+  <nav class="custom-nav">
+    <a class="nav-item active" routerLink="/feed">Pra você</a>
+    <a class="nav-item" routerLink="/explore">Explorar</a>
+    <a class="nav-item" routerLink="/profile">Perfil</a>
+  </nav>
+
   <div *ngIf="loading" class="ion-text-center" style="margin-top: 50px;">
     <ion-spinner name="crescent"></ion-spinner>
     <p>Buscando livros baseados no seu perfil...</p>

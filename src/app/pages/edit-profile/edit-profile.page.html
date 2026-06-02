@@ -11,13 +11,11 @@
    
     <ion-input placeholder="Nome" [(ngModel)]="user.nome"></ion-input>
 
-    <ion-input placeholder="Email" [(ngModel)]="user.email"></ion-input>
-
-    <ion-input type="password" placeholder="Senha" [(ngModel)]="user.senha"></ion-input>
+    <ion-input placeholder="Email" [(ngModel)]="user.email" [readonly]="true"></ion-input>
 
     
-    <ion-button expand="block" (click)="salvar()">
-      Salvar Alterações
+    <ion-button expand="block" (click)="salvar()" [disabled]="salvando || !user.nome.trim()">
+      {{ salvando ? 'Salvando...' : 'Salvar Alterações' }}
     </ion-button>
 
   </div>

@@ -77,6 +77,26 @@ export class AuthService {
   }
 
   /**
+   * Atualiza os dados básicos exibidos no perfil.
+   */
+  async atualizarPerfil(nome: string) {
+    const usuario = this.getUsuarioAtual();
+
+    if (!usuario) {
+      throw new Error('Usuário não autenticado.');
+    }
+
+    await updateProfile(usuario, { displayName: nome });
+
+    const userDocRef = doc(this.firestore, `usuarios/${usuario.uid}`);
+    return setDoc(userDocRef, {
+      nome,
+      email: usuario.email,
+      atualizadoEm: new Date()
+    }, { merge: true });
+  }
+
+  /**
    * FIRESTORE: Salva ou atualiza os gêneros escolhidos pelo usuário
    */
   async salvarPreferencias(uid: string, generos: string[]) {
