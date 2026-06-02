@@ -108,14 +108,14 @@
       </ul>
     </li>
     <li class="done">Manutencao de sessao e redirecionamento automatico de usuario autenticado.</li>
-    <li class="partial">Logout do sistema.
+    <li class="done">Logout do sistema.
       <ul>
         <li class="done">Metodo de logout criado no servico de autenticacao.</li>
-        <li class="pending">Adicionar botao de sair na interface e redirecionar para a tela inicial.</li>
+        <li class="done">Botao de sair adicionado na interface com redirecionamento para a tela inicial.</li>
       </ul>
     </li>
     <li class="pending">Recuperacao de senha.</li>
-    <li class="pending">Protecao de rotas para impedir acesso direto ao feed, perfil e questionario sem login.</li>
+    <li class="done">Protecao de rotas para impedir acesso direto ao feed, explorar, perfil, edicao de perfil e questionario sem login.</li>
   </ul>
 
   <h3>Preferencias e recomendacoes</h3>
@@ -125,8 +125,8 @@
     <li class="done">Feed personalizado com livros carregados conforme os generos escolhidos.</li>
     <li class="done">Consumo da API gratuita Open Library.</li>
     <li class="done">Exibicao de titulo, autor e capa quando fornecidos pela API.</li>
-    <li class="pending">Adicionar uma imagem padrao existente quando a API nao retornar capa.</li>
-    <li class="pending">Trocar ou mapear o genero "Classicos", pois a consulta atual nao retorna livros.</li>
+    <li class="done">Imagem padrao local exibida quando a API nao retorna capa.</li>
+    <li class="done">Genero "Classicos" mapeado para o assunto <code>classic_literature</code> da Open Library.</li>
     <li class="pending">Exibir sinopse real dos livros.</li>
     <li class="pending">Exibir avaliacoes reais ou remover as estrelas decorativas.</li>
     <li class="pending">Implementar busca de livros por texto.</li>
@@ -209,8 +209,8 @@
 
   <h2>Ordem recomendada de trabalho</h2>
   <ol>
-    <li><span class="priority">Fechar a demonstracao principal:</span> logout na interface, capa padrao, ajuste de "Classicos" e protecao de rotas.</li>
-    <li><span class="priority">Implementar o diferencial anunciado:</span> busca e favoritos reais persistidos no Firestore.</li>
+    <li class="done"><span class="priority">Fechar a demonstracao principal:</span> logout na interface, capa padrao, ajuste de "Classicos" e protecao de rotas.</li>
+    <li><span class="priority">Etapa pulada nesta rodada:</span> busca e favoritos reais persistidos no Firestore.</li>
     <li><span class="priority">Decidir o escopo das avaliacoes:</span> integrar uma fonte confiavel ou retirar esse item da apresentacao.</li>
     <li><span class="priority">Limpar a qualidade tecnica:</span> lint, avisos do build e testes comportamentais.</li>
     <li><span class="priority">Atualizar a apresentacao:</span> mostrar como concluido somente o que pode ser demonstrado no APK.</li>

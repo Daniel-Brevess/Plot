@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { IonBackButton, IonContent, IonIcon } from '@ionic/angular/standalone';
+import { Router, RouterLink } from '@angular/router';
+import { IonBackButton, IonButton, IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { createOutline } from 'ionicons/icons';
+import { createOutline, logOutOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth';
 
 @Component({
@@ -11,17 +11,18 @@ import { AuthService } from '../../services/auth';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterLink, IonContent, IonBackButton, IonIcon]
+  imports: [CommonModule, RouterLink, IonContent, IonBackButton, IonButton, IonIcon]
 })
 export class ProfilePage implements OnInit {
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   nome = 'Leitor Plot';
   email = '';
   foto = 'https://i.pravatar.cc/150';
 
   constructor() {
-    addIcons({ createOutline });
+    addIcons({ createOutline, logOutOutline });
   }
 
   ngOnInit() {
@@ -30,6 +31,11 @@ export class ProfilePage implements OnInit {
 
   ionViewWillEnter() {
     this.carregarPerfil();
+  }
+
+  async sair() {
+    await this.authService.logout();
+    await this.router.navigate(['/home'], { replaceUrl: true });
   }
 
   private carregarPerfil() {

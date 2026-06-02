@@ -7,12 +7,16 @@ import { firstValueFrom } from 'rxjs';
 })
 export class BookService {
   private baseUrl = 'https://openlibrary.org';
+  private subjectAliases: Record<string, string> = {
+    'clássicos': 'classic_literature'
+  };
 
   constructor(private http: HttpClient) {}
 
   async getBooksByGenre(genre: string) {
     // A Open Library usa minúsculas e snake_case para subjects
-    const subject = genre.toLowerCase().replace(' ', '_');
+    const normalizedGenre = genre.toLowerCase();
+    const subject = this.subjectAliases[normalizedGenre] || normalizedGenre.replace(/ /g, '_');
     
     // Buscamos 10 livros por gênero para não sobrecarregar
     const url = `${this.baseUrl}/subjects/${subject}.json?limit=10`;
@@ -26,7 +30,7 @@ export class BookService {
         // A Open Library usa IDs para capas. O 'M' é para tamanho médio.
         capa: work.cover_id 
           ? `https://covers.openlibrary.org/b/id/${work.cover_id}-M.jpg` 
-          : 'assets/imgs/default-cover.jpg', 
+          : 'assets/default-cover.svg',
         descricao: work.authors?.[0]?.name || 'Autor desconhecido'
       }));
     } catch (error) {

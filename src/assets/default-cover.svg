@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 360" role="img" aria-labelledby="title description">
+  <title id="title">Capa padrão do Plot</title>
+  <desc id="description">Capa marrom com a letra P e o texto Plot.</desc>
+  <rect width="240" height="360" rx="12" fill="#4a2c21"/>
+  <rect x="16" y="16" width="208" height="328" rx="8" fill="none" stroke="#e6d5b8" stroke-width="4"/>
+  <text x="120" y="195" fill="#e6d5b8" font-family="Georgia, serif" font-size="132" font-weight="700" text-anchor="middle">P</text>
+  <text x="120" y="278" fill="#e6d5b8" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="8" text-anchor="middle">PLOT</text>
+</svg>

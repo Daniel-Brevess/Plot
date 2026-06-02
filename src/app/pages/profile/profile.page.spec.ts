@@ -12,7 +12,13 @@ describe('ProfilePage', () => {
       imports: [ProfilePage],
       providers: [
         provideRouter([]),
-        { provide: AuthService, useValue: { getUsuarioAtual: () => null } }
+        {
+          provide: AuthService,
+          useValue: {
+            getUsuarioAtual: () => null,
+            logout: () => Promise.resolve()
+          }
+        }
       ]
     }).compileComponents();
 
