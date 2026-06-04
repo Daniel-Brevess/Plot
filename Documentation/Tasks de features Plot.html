@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Tasks de features do projeto Plot</title>
+  <style>
+    @page { size: A4; margin: 16mm; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: #2f211b;
+      font: 12px/1.45 Arial, sans-serif;
+      background: #fff;
+    }
+    h1, h2, h3 { color: #5a321f; margin: 0; }
+    h1 { font-size: 25px; }
+    h2 {
+      margin-top: 20px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid #b98e6b;
+      font-size: 17px;
+    }
+    h3 { margin-top: 12px; font-size: 14px; }
+    p { margin: 6px 0; }
+    ul { margin: 6px 0 8px; padding-left: 20px; }
+    li { margin: 4px 0; }
+    .cover {
+      min-height: 250mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      page-break-after: always;
+    }
+    .cover .logo {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 18px;
+      border-radius: 18px;
+      color: #fff;
+      background: #5a321f;
+      font: bold 52px/76px Georgia, serif;
+    }
+    .cover .subtitle { margin-top: 10px; color: #73533f; font-size: 15px; }
+    .cover .meta { margin-top: 50px; color: #73533f; }
+    .box {
+      margin: 10px 0;
+      padding: 9px 12px;
+      border-left: 4px solid #b98e6b;
+      background: #f7efe5;
+    }
+    .priority {
+      display: inline-block;
+      min-width: 48px;
+      margin-right: 6px;
+      padding: 1px 6px;
+      border-radius: 9px;
+      font-size: 10px;
+      font-weight: bold;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .high { color: #7a2929; background: #f3d7d7; }
+    .medium { color: #7a4a17; background: #f6e2bc; }
+    .low { color: #315b31; background: #dcebd9; }
+    .small { color: #73533f; font-size: 11px; }
+  </style>
+</head>
+<body>
+  <section class="cover">
+    <div class="logo">P</div>
+    <h1>Tasks de features do projeto Plot</h1>
+    <p class="subtitle">Lista focada apenas em funcionalidades do aplicativo</p>
+    <p class="meta">Atualizado em 4 de junho de 2026<br>Projeto academico de Analise e Desenvolvimento de Sistemas</p>
+  </section>
+
+  <h2>Escopo deste documento</h2>
+  <div class="box">
+    <p>Este PDF lista somente tarefas relacionadas a funcionalidades percebidas pelo usuario.</p>
+    <p>Nao inclui pendencias tecnicas como lint, build, versao do Node, testes automatizados, identificadores nativos ou configuracoes internas.</p>
+  </div>
+
+  <h2>Prioridades sugeridas</h2>
+  <ul>
+    <li><span class="priority high">Alta</span>Feature importante para demonstracao, fluxo principal ou requisito anunciado.</li>
+    <li><span class="priority medium">Media</span>Feature relevante para completar a experiencia, mas que pode entrar depois da demonstracao principal.</li>
+    <li><span class="priority low">Baixa</span>Melhoria desejavel ou item que pode ser apresentado como trabalho futuro.</li>
+  </ul>
+
+  <h2>Conta e autenticacao</h2>
+  <ul>
+    <li><span class="priority high">Alta</span>Testar o login com Google em um aparelho Android real.</li>
+    <li><span class="priority high">Alta</span>Implementar recuperacao de senha para usuarios que esquecerem a senha.</li>
+    <li><span class="priority medium">Media</span>Definir se o usuario podera alterar o e-mail da conta pelo perfil.</li>
+    <li><span class="priority medium">Media</span>Se a alteracao de e-mail for mantida no escopo, criar o fluxo de edicao e confirmacao do novo e-mail.</li>
+  </ul>
+
+  <h2>Recomendacoes e livros</h2>
+  <ul>
+    <li><span class="priority high">Alta</span>Implementar busca de livros por texto.</li>
+    <li><span class="priority high">Alta</span>Exibir sinopse real dos livros quando a informacao estiver disponivel.</li>
+    <li><span class="priority medium">Media</span>Implementar carregamento progressivo para listas maiores de livros.</li>
+    <li><span class="priority medium">Media</span>Melhorar a experiencia quando um livro nao tiver capa, autor ou sinopse.</li>
+  </ul>
+
+  <h2>Explorar</h2>
+  <ul>
+    <li><span class="priority high">Alta</span>Transformar a pagina Explorar em uma area realmente exploratoria, com filtros ou escolha de genero.</li>
+    <li><span class="priority high">Alta</span>Permitir combinar busca por texto com genero literario.</li>
+    <li><span class="priority medium">Media</span>Adicionar estados visuais para carregamento, nenhum resultado e erro de busca.</li>
+  </ul>
+
+  <h2>Favoritos</h2>
+  <ul>
+    <li><span class="priority high">Alta</span>Implementar botao para favoritar e desfavoritar livros.</li>
+    <li><span class="priority high">Alta</span>Salvar favoritos individualmente por usuario.</li>
+    <li><span class="priority high">Alta</span>Listar os favoritos reais no perfil.</li>
+    <li><span class="priority medium">Media</span>Permitir remover favoritos diretamente pela tela de perfil.</li>
+  </ul>
+
+  <h2>Avaliacoes</h2>
+  <ul>
+    <li><span class="priority high">Alta</span>Decidir se as avaliacoes serao removidas da apresentacao ou implementadas como feature real.</li>
+    <li><span class="priority medium">Media</span>Se a feature for mantida, definir se a nota vira de uma fonte externa ou dos proprios usuarios do app.</li>
+    <li><span class="priority medium">Media</span>Substituir estrelas decorativas por avaliacoes reais ou por outro indicador honesto.</li>
+  </ul>
+
+  <h2>Perfil</h2>
+  <ul>
+    <li><span class="priority high">Alta</span>Substituir os favoritos fixos exibidos no perfil por dados reais.</li>
+    <li><span class="priority medium">Media</span>Permitir atualizar a foto do perfil usando uma imagem escolhida pelo usuario.</li>
+    <li><span class="priority low">Baixa</span>Avaliar se vale incluir captura de foto diretamente pelo app.</li>
+  </ul>
+
+  <h2>Preferencias</h2>
+  <ul>
+    <li><span class="priority medium">Media</span>Permitir que o usuario edite os tres generos preferidos depois do cadastro inicial.</li>
+    <li><span class="priority medium">Media</span>Atualizar o feed automaticamente quando as preferencias forem alteradas.</li>
+    <li><span class="priority low">Baixa</span>Adicionar uma explicacao curta para o usuario entender como as recomendacoes sao formadas.</li>
+  </ul>
+
+  <h2>Experiencia do usuario</h2>
+  <ul>
+    <li><span class="priority medium">Media</span>Adicionar mensagens claras para falhas de login, cadastro, busca e carregamento de livros.</li>
+    <li><span class="priority medium">Media</span>Revisar a tela "Sobre o Plot" para prometer somente funcionalidades existentes ou planejadas como futuro.</li>
+    <li><span class="priority low">Baixa</span>Adicionar feedback discreto em interacoes importantes, como favoritar livro ou salvar perfil.</li>
+  </ul>
+
+  <h2>Ordem recomendada</h2>
+  <ol>
+    <li>Testar login Google no Android real.</li>
+    <li>Implementar busca de livros.</li>
+    <li>Implementar favoritos reais e exibir no perfil.</li>
+    <li>Decidir e ajustar avaliacoes.</li>
+    <li>Melhorar a pagina Explorar com filtros e generos.</li>
+    <li>Adicionar recuperacao de senha.</li>
+    <li>Permitir edicao de preferencias literarias.</li>
+  </ol>
+
+  <h2>Base de analise</h2>
+  <p class="small">Documento derivado do relatorio geral do projeto Plot atualizado em 4 de junho de 2026.</p>
+</body>
+</html>
