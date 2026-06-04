@@ -75,7 +75,7 @@
     <div class="logo">P</div>
     <h1>Relatorio geral do projeto Plot</h1>
     <p class="subtitle">Checklist consolidado da documentacao, dos slides e da implementacao atual</p>
-    <p class="meta">Gerado em 2 de junho de 2026<br>Projeto academico de Analise e Desenvolvimento de Sistemas</p>
+    <p class="meta">Atualizado em 4 de junho de 2026<br>Projeto academico de Analise e Desenvolvimento de Sistemas</p>
   </section>
 
   <h2>Como ler este documento</h2>
@@ -86,11 +86,12 @@
   </div>
 
   <h2>Resumo atual</h2>
-  <p>O Plot ja possui uma base demonstravel: autenticacao, questionario de generos, recomendacoes por API, navegacao principal, perfil editavel e APK Android atualizado. A maior parte das pendencias vem de recursos anunciados nos slides antes de serem implementados.</p>
+  <p>O Plot ja possui uma base demonstravel: autenticacao, questionario de generos, recomendacoes por API, navegacao principal, perfil editavel, APK Android atualizado e login Google nativo configurado para Android. A maior parte das pendencias vem de recursos anunciados nos slides antes de serem implementados.</p>
   <ul>
     <li class="done">Aplicativo Ionic e Angular estruturado e compilando.</li>
     <li class="done">APK Android atualizado em <code>apk/app-debug.apk</code>.</li>
     <li class="done">Suite automatizada executando com 9 testes aprovados.</li>
+    <li class="done">Login Google Android configurado com Web Client ID, <code>google-services.json</code> atualizado e SHA-1 debug registrado no Firebase.</li>
     <li class="pending">Corrigir os 12 erros restantes do lint.</li>
     <li class="pending">Alinhar README e slides com o escopo realmente entregue.</li>
   </ul>
@@ -106,7 +107,9 @@
         <li class="done">Fluxo implementado para navegador com Firebase.</li>
         <li class="done">Fluxo nativo Android implementado com Credential Manager e troca do ID token por credencial Firebase.</li>
         <li class="done">SHA-1 debug identificado: <code>32:F6:BA:1C:24:92:A1:7A:1A:03:12:FE:71:46:D7:70:0D:D2:BC:73</code>.</li>
-        <li class="pending">Cadastrar o Web Client ID em <code>environment.googleWebClientId</code>, registrar o SHA-1 no Firebase e validar em aparelho Android.</li>
+        <li class="done">Web Client ID configurado em <code>environment.googleWebClientId</code>.</li>
+        <li class="done">Arquivo <code>android/app/google-services.json</code> atualizado apos o cadastro do SHA-1 no Firebase.</li>
+        <li class="pending">Validar o fluxo em aparelho Android com Google Play Services.</li>
       </ul>
     </li>
     <li class="done">Manutencao de sessao e redirecionamento automatico de usuario autenticado.</li>
@@ -169,6 +172,7 @@
   <ul>
     <li class="done">Firebase Authentication configurado.</li>
     <li class="done">Firestore usado para preferencias e dados basicos do perfil.</li>
+    <li class="done">Configuracao Android do Firebase incluida em <code>android/app/google-services.json</code>.</li>
     <li class="done">Uso simples de armazenamento local para a foto do perfil.</li>
     <li class="pending">Ionic Storage, Preferences e SQLite citados no slide nao estao implementados. Implementar somente se forem realmente necessarios ou remover do slide.</li>
     <li class="pending">Filesystem com arquivos CSV e JSON citado no slide nao esta implementado. Implementar ou remover do slide.</li>
@@ -187,6 +191,7 @@
     <li class="done">Build web concluido com sucesso.</li>
     <li class="done">Build Android concluido com sucesso.</li>
     <li class="done">APK Android atualizado apos as correcoes.</li>
+    <li class="done">Relatorio <code>signingReport</code> executado para confirmar SHA-1 e SHA-256 debug.</li>
     <li class="done">Testes unitarios destravados: 9 testes aprovados.</li>
     <li class="pending">Corrigir 12 erros de lint restantes: migrar injecoes antigas para <code>inject()</code> e remover ciclos de vida vazios.</li>
     <li class="pending">Remover imports Ionic nao utilizados apontados como avisos durante o build.</li>
@@ -224,6 +229,8 @@
     <li><code>Documentation/Slide app Rpojeto Plot V2.pptx</code></li>
     <li>Codigo-fonte atual em <code>src/app</code></li>
     <li>Configuracao atual do projeto e APK Android gerado</li>
+    <li>Configuracao Firebase Android em <code>android/app/google-services.json</code></li>
+    <li>Relatorio Gradle <code>signingReport</code> executado em 4 de junho de 2026</li>
   </ul>
 </body>
 </html>

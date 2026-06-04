@@ -7,5 +7,5 @@ export const environment = {
   messagingSenderId: "955297535767",
   appId: "1:955297535767:web:ea2605c9bc83b410104952",
   measurementId: "G-Q5LKX6H9G5",
-  googleWebClientId: ""
+  googleWebClientId: "955297535767-s0kvm6n72q46i7kdif4ecl8gn1tfmol7.apps.googleusercontent.com"
 };
