@@ -43,6 +43,7 @@ export class HomePage implements OnInit {
   // Controle de estado dos Modais
   isLoginOpen = false;
   isRegisterOpen = false;
+  recuperandoSenha = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -107,6 +108,27 @@ export class HomePage implements OnInit {
     }
   }
 
+  async recuperarSenha() {
+    const email = this.email.trim();
+
+    if (!email) {
+      alert('Digite seu e-mail para receber o link de recuperação de senha.');
+      return;
+    }
+
+    this.recuperandoSenha = true;
+
+    try {
+      await this.authService.recuperarSenha(email);
+      alert('Enviamos um link de recuperação de senha para o seu e-mail.');
+    } catch (err) {
+      console.error('Erro na recuperação de senha:', err);
+      alert(this.getMensagemErroRecuperacaoSenha(err));
+    } finally {
+      this.recuperandoSenha = false;
+    }
+  }
+
   async loginGoogle() {
     try {
       const credential = await this.authService.loginComGoogle();
@@ -145,5 +167,18 @@ export class HomePage implements OnInit {
     }
 
     return `Não foi possível entrar com o Google. Verifique a configuração do aplicativo ou tente novamente.\n\nDetalhe: ${message || code || 'erro desconhecido'}`;
+  }
+
+  private getMensagemErroRecuperacaoSenha(err: unknown): string {
+    const error = err as { code?: string };
+
+    switch (error?.code) {
+      case 'auth/invalid-email':
+        return 'Digite um e-mail válido para recuperar a senha.';
+      case 'auth/user-not-found':
+        return 'Não encontramos uma conta com esse e-mail.';
+      default:
+        return 'Não foi possível enviar o e-mail de recuperação. Tente novamente.';
+    }
   }
 }

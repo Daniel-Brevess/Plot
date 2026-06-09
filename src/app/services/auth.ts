@@ -4,6 +4,7 @@ import { Capacitor } from '@capacitor/core';
 import { 
   Auth, 
   createUserWithEmailAndPassword, 
+  sendPasswordResetEmail,
   signInWithCredential,
   signInWithEmailAndPassword, 
   signInWithPopup, 
@@ -64,6 +65,13 @@ export class AuthService {
    */
   login(email: string, senha: string) {
     return signInWithEmailAndPassword(this.auth, email, senha);
+  }
+
+  /**
+   * Envia o e-mail de recuperacao de senha para o usuario.
+   */
+  recuperarSenha(email: string) {
+    return sendPasswordResetEmail(this.auth, email);
   }
 
   /**
