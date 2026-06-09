@@ -58,20 +58,6 @@ ion-content {
     }
   }
 
-  .status-tags {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-
-    .tag {
-      width: 35px;
-      height: 25px;
-      background-color: #4A2C21;
-      border-radius: 6px;
-      opacity: 0.8;
-    }
-  }
-
   .logout-button {
     --color: #4A2C21;
     font-weight: 700;
@@ -123,4 +109,20 @@ ion-content {
     font-size: 0.8rem;
     font-weight: 700;
   }
+}
+
+.preferences-section{padding:22px 25px;background:#f1e4ca;color:#4A2C21}
+.preferences-section .section-title{margin:0;font-weight:800}
+.preferences-section p{margin:5px 0 14px;font-size:.9rem}
+
+.edit-preferences {
+  display: inline-flex;
+  margin-bottom: 12px;
+  color: #7a3d2a;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.empty-preferences {
+  font-weight: 700;
 }

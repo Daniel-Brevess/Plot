@@ -15,16 +15,27 @@
       <p class="user-handle">{{ email }}</p>
     </div>
 
-    <div class="status-tags">
-      <div class="tag"></div>
-      <div class="tag"></div>
-      <div class="tag"></div>
-    </div>
-
     <ion-button fill="clear" class="logout-button" (click)="sair()">
       <ion-icon name="log-out-outline" slot="start"></ion-icon>
       Sair
     </ion-button>
+  </div>
+
+  <div class="preferences-section">
+    <div>
+      <h3 class="section-title">Preferencias</h3>
+      <p>Seu feed combina livros desses generos.</p>
+    </div>
+
+    <a class="edit-preferences" routerLink="/questionario">Editar</a>
+
+    <div class="preference-tags" *ngIf="preferencias.length > 0; else semPreferencias">
+      <span *ngFor="let genero of preferencias">{{ genero }}</span>
+    </div>
+
+    <ng-template #semPreferencias>
+      <p class="empty-preferences">Escolha 3 generos para personalizar o feed.</p>
+    </ng-template>
   </div>
 
   <div class="favorites-section">

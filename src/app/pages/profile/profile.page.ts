@@ -21,6 +21,7 @@ export class ProfilePage implements OnInit {
   email = '';
   foto = 'https://i.pravatar.cc/150';
   favoritos: FavoriteBook[] = [];
+  preferencias: string[] = [];
   carregandoFavoritos = true;
   removendoFavorito = '';
   erroFavoritos = '';
@@ -77,6 +78,7 @@ export class ProfilePage implements OnInit {
       || this.foto;
 
     await this.carregarFavoritos();
+    await this.carregarPreferencias();
   }
 
   private async carregarFavoritos() {
@@ -90,6 +92,15 @@ export class ProfilePage implements OnInit {
       this.erroFavoritos = 'Nao foi possivel carregar seus favoritos.';
     } finally {
       this.carregandoFavoritos = false;
+    }
+  }
+
+  private async carregarPreferencias() {
+    try {
+      this.preferencias = await this.authService.carregarPreferencias();
+    } catch (error) {
+      console.error('Erro ao carregar preferencias:', error);
+      this.preferencias = [];
     }
   }
 }

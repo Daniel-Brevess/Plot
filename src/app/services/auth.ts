@@ -164,6 +164,24 @@ export class AuthService {
     }, { merge: true });
   }
 
+  async carregarPreferencias(uid?: string): Promise<string[]> {
+    const usuarioId = uid || this.getUsuarioAtual()?.uid;
+
+    if (!usuarioId) {
+      return [];
+    }
+
+    const docRef = doc(this.firestore, `usuarios/${usuarioId}`);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      return [];
+    }
+
+    const preferencias = docSnap.data()['preferencias'];
+    return Array.isArray(preferencias) ? preferencias : [];
+  }
+
   /**
    * FIRESTORE: Verifica se o usuário já preencheu o questionário
    * Útil para decidir se ele vai para o Feed ou para o Questionário ao logar

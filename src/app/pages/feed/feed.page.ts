@@ -6,7 +6,6 @@ import { addIcons } from 'ionicons';
 import { heart, heartOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
 import { BookListItem, BookService } from '../../services/bookservice';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-feed',
@@ -25,13 +24,13 @@ export class FeedPage implements OnInit {
   favoritos = new Set<string>();
 
   private generos: string[] = [];
+  private preferenciasKey = '';
   private paginaAtual = 0;
   private readonly livrosPorGenero = 4;
 
   constructor(
     private authService: AuthService,
-    private bookService: BookService,
-    private firestore: Firestore
+    private bookService: BookService
   ) {
     addIcons({ heart, heartOutline, star, starHalf, starOutline });
   }
@@ -41,6 +40,14 @@ export class FeedPage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    const preferencias = await this.authService.carregarPreferencias();
+    const preferenciasKey = preferencias.join('|');
+
+    if (this.preferenciasKey && preferenciasKey !== this.preferenciasKey) {
+      await this.carregarRecomendacoes();
+      return;
+    }
+
     await this.carregarFavoritos();
   }
 
@@ -51,20 +58,10 @@ export class FeedPage implements OnInit {
     this.paginaAtual = 0;
 
     try {
-      const user = this.authService.getUsuarioAtual();
-
-      if (!user) {
-        return;
-      }
-
-      const docRef = doc(this.firestore, `usuarios/${user.uid}`);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        this.generos = docSnap.data()['preferencias'] || [];
-        await this.carregarPaginaDeRecomendacoes();
-        await this.carregarFavoritos();
-      }
+      this.generos = await this.authService.carregarPreferencias();
+      this.preferenciasKey = this.generos.join('|');
+      await this.carregarPaginaDeRecomendacoes();
+      await this.carregarFavoritos();
     } catch (error) {
       console.error('Erro ao carregar recomendações:', error);
       this.erro = 'Não foi possível carregar as recomendações. Tente novamente.';

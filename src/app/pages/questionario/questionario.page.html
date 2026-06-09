@@ -1,31 +1,37 @@
 <ion-content>
   <div class="container-questionario">
-    <h2 class="welcome-title">O que você gosta de ler?</h2>
-    <p class="subtitle">Escolha seus 3 gêneros favoritos.</p>
+    <h2 class="welcome-title">Preferencias literarias</h2>
+    <p class="subtitle">Escolha exatamente 3 generos. O feed usa essa selecao para buscar recomendacoes na Open Library.</p>
 
-    <div class="genre-grid">
-      <div 
-        *ngFor="let g of genres" 
-        class="genre-button" 
+    <div *ngIf="loading" class="state-message">
+      <p>Carregando preferencias...</p>
+    </div>
+
+    <div *ngIf="!loading && erro" class="state-message error">
+      <p>{{ erro }}</p>
+    </div>
+
+    <div class="genre-grid" *ngIf="!loading">
+      <button
+        type="button"
+        *ngFor="let g of genres"
+        class="genre-button"
         [class.selected]="isSelected(g)"
         (click)="toggleGenre(g)">
         {{ g }}
-      </div>
+      </button>
     </div>
 
-    <div class="counter-info">
+    <div class="counter-info" *ngIf="!loading">
       {{ form.selectedGenres.length }} de 3 selecionados
     </div>
 
-    <ion-button 
-      class="btn-finalizar" 
-      expand="block" 
-      (click)="submit()" 
-      [disabled]="form.selectedGenres.length !== 3 || submitting">
-      {{ submitting ? 'Salvando...' : 'Finalizar' }}
+    <ion-button
+      class="btn-finalizar"
+      expand="block"
+      (click)="submit()"
+      [disabled]="loading || form.selectedGenres.length !== 3 || submitting">
+      {{ submitting ? 'Salvando...' : 'Salvar preferencias' }}
     </ion-button>
   </div>
 </ion-content>
-
-
-

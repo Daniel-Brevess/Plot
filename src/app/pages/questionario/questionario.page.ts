@@ -1,103 +1,105 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router'; 
-import { AuthService } from '../../services/auth'; // Caminho do seu serviço
-import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonLabel,
-  IonButton
-} from '@ionic/angular/standalone';
+import { Router } from '@angular/router';
+import { IonButton, IonContent } from '@ionic/angular/standalone';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-questionario',
   templateUrl: './questionario.page.html',
   styleUrls: ['./questionario.page.scss'],
   standalone: true,
-  imports: [
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    IonLabel,
-    IonButton,
-    CommonModule,
-    FormsModule
-  ]
+  imports: [IonContent, IonButton, CommonModule, FormsModule]
 })
 export class QuestionarioPage implements OnInit {
-
-  // Lista de gêneros (Paleta Plot)
   genres: string[] = [
-    'Romance', 'Ficção Científica', 'Fantasia', 
-    'Terror', 'Biografia', 'História', 
-    'Suspense', 'Autoajuda', 'Poesia',
-    'Drama', 'Aventura', 'Clássicos'
+    'Romance',
+    'Ficcao Cientifica',
+    'Fantasia',
+    'Terror',
+    'Biografia',
+    'Historia',
+    'Suspense',
+    'Autoajuda',
+    'Poesia',
+    'Drama',
+    'Aventura',
+    'Classicos'
   ];
 
   form = {
     selectedGenres: [] as string[]
   };
 
+  loading = true;
   submitting = false;
+  erro = '';
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  async ngOnInit() {
+    await this.carregarPreferencias();
+  }
 
-  // Seleção limitada a exatamente 3
-  toggleGenre(g: string) {
-    const index = this.form.selectedGenres.indexOf(g);
-    
+  toggleGenre(genero: string) {
+    const index = this.form.selectedGenres.indexOf(genero);
+
     if (index > -1) {
       this.form.selectedGenres.splice(index, 1);
-    } else {
-      if (this.form.selectedGenres.length < 3) {
-        this.form.selectedGenres.push(g);
-      }
+      return;
+    }
+
+    if (this.form.selectedGenres.length < 3) {
+      this.form.selectedGenres.push(genero);
     }
   }
 
-  isSelected(g: string): boolean {
-    return this.form.selectedGenres.includes(g);
+  isSelected(genero: string): boolean {
+    return this.form.selectedGenres.includes(genero);
   }
 
-  // Submissão utilizando o método getUsuarioAtual()
   async submit() {
     if (this.form.selectedGenres.length !== 3) {
       return;
     }
 
+    const usuario = this.authService.getUsuarioAtual();
+
+    if (!usuario?.uid) {
+      this.erro = 'Sessao invalida. Entre novamente para salvar suas preferencias.';
+      await this.router.navigate(['/home']);
+      return;
+    }
+
     this.submitting = true;
+    this.erro = '';
 
     try {
-      // Chamada ao método que criámos no AuthService
-      const usuario = this.authService.getUsuarioAtual();
-
-      if (usuario && usuario.uid) {
-        // Gravação no Firestore
       await this.authService.salvarPreferencias(usuario.uid, this.form.selectedGenres);
-
-      console.log('Preferências salvas com sucesso no Firestore!');
-
-      // Navega para o feed e limpa o histórico para o usuário não voltar ao questionário
-      this.router.navigate(['/feed'], { replaceUrl: true });
-      } else {
-        console.error('Usuário não identificado pelo AuthService');
-        alert('Sessão inválida. Por favor, faça login novamente.');
-        this.router.navigate(['/home']);
-      }
-    } catch (err) {
-      console.error('Erro ao persistir preferências:', err);
-      alert('Erro ao guardar as suas escolhas. Tente novamente.');
+      await this.router.navigate(['/feed'], { replaceUrl: true });
+    } catch (error) {
+      console.error('Erro ao persistir preferencias:', error);
+      this.erro = 'Nao foi possivel salvar suas preferencias. Tente novamente.';
     } finally {
       this.submitting = false;
+    }
+  }
+
+  private async carregarPreferencias() {
+    this.loading = true;
+    this.erro = '';
+
+    try {
+      this.form.selectedGenres = await this.authService.carregarPreferencias();
+    } catch (error) {
+      console.error('Erro ao carregar preferencias:', error);
+      this.erro = 'Nao foi possivel carregar suas preferencias atuais.';
+    } finally {
+      this.loading = false;
     }
   }
 }
