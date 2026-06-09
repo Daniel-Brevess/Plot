@@ -16,12 +16,26 @@ import {
 } from '@angular/fire/auth';
 import { 
   Firestore, 
+  collection,
+  deleteDoc,
   doc, 
-  setDoc, 
-  getDoc 
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  setDoc
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+
+export interface FavoriteBook {
+  id: string;
+  titulo: string;
+  capa: string;
+  autores: string[];
+  primeiraPublicacao?: string;
+  sinopse: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -164,5 +178,56 @@ export class AuthService {
       return !!(dados['preferencias'] && dados['preferencias'].length > 0);
     }
     return false;
+  }
+
+  async listarFavoritos(): Promise<FavoriteBook[]> {
+    const usuario = this.getUsuarioAtual();
+
+    if (!usuario) {
+      return [];
+    }
+
+    const favoritosRef = collection(this.firestore, `usuarios/${usuario.uid}/favoritos`);
+    const favoritosQuery = query(favoritosRef, orderBy('favoritadoEm', 'desc'));
+    const snapshot = await getDocs(favoritosQuery);
+
+    return snapshot.docs.map(item => item.data() as FavoriteBook);
+  }
+
+  async ehFavorito(bookId: string): Promise<boolean> {
+    const usuario = this.getUsuarioAtual();
+
+    if (!usuario) {
+      return false;
+    }
+
+    const favoritoRef = doc(this.firestore, `usuarios/${usuario.uid}/favoritos/${bookId}`);
+    const snapshot = await getDoc(favoritoRef);
+    return snapshot.exists();
+  }
+
+  async salvarFavorito(livro: FavoriteBook) {
+    const usuario = this.getUsuarioAtual();
+
+    if (!usuario) {
+      throw new Error('Usuario nao autenticado.');
+    }
+
+    const favoritoRef = doc(this.firestore, `usuarios/${usuario.uid}/favoritos/${livro.id}`);
+    return setDoc(favoritoRef, {
+      ...livro,
+      favoritadoEm: new Date()
+    }, { merge: true });
+  }
+
+  async removerFavorito(bookId: string) {
+    const usuario = this.getUsuarioAtual();
+
+    if (!usuario) {
+      throw new Error('Usuario nao autenticado.');
+    }
+
+    const favoritoRef = doc(this.firestore, `usuarios/${usuario.uid}/favoritos/${bookId}`);
+    return deleteDoc(favoritoRef);
   }
 }

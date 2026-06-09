@@ -3,7 +3,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IonButton, IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBackOutline, calendarOutline, openOutline, personOutline, pricetagOutline, star, starHalf, starOutline } from 'ionicons/icons';
+import { arrowBackOutline, calendarOutline, heart, heartOutline, openOutline, personOutline, pricetagOutline, star, starHalf, starOutline } from 'ionicons/icons';
+import { AuthService, FavoriteBook } from '../../services/auth';
 import { BookDetail, BookService } from '../../services/bookservice';
 
 @Component({
@@ -17,13 +18,16 @@ export class BookDetailPage implements OnInit {
   private route = inject(ActivatedRoute);
   private bookService = inject(BookService);
   private location = inject(Location);
+  private authService = inject(AuthService);
 
   book: BookDetail | null = null;
   loading = true;
+  salvandoFavorito = false;
+  favorito = false;
   error = '';
 
   constructor() {
-    addIcons({ arrowBackOutline, calendarOutline, openOutline, personOutline, pricetagOutline, star, starHalf, starOutline });
+    addIcons({ arrowBackOutline, calendarOutline, heart, heartOutline, openOutline, personOutline, pricetagOutline, star, starHalf, starOutline });
   }
 
   async ngOnInit() {
@@ -37,6 +41,7 @@ export class BookDetailPage implements OnInit {
 
     try {
       this.book = await this.bookService.getBookDetails(workId);
+      this.favorito = await this.authService.ehFavorito(this.book.id);
     } catch (error) {
       console.error('Erro ao carregar livro:', error);
       this.error = 'Nao foi possivel carregar os detalhes deste livro.';
@@ -51,6 +56,30 @@ export class BookDetailPage implements OnInit {
 
   voltar() {
     this.location.back();
+  }
+
+  async alternarFavorito() {
+    if (!this.book || this.salvandoFavorito) {
+      return;
+    }
+
+    this.salvandoFavorito = true;
+
+    try {
+      if (this.favorito) {
+        await this.authService.removerFavorito(this.book.id);
+        this.favorito = false;
+        return;
+      }
+
+      await this.authService.salvarFavorito(this.toFavoriteBook(this.book));
+      this.favorito = true;
+    } catch (error) {
+      console.error('Erro ao atualizar favorito:', error);
+      this.error = 'Nao foi possivel atualizar seus favoritos.';
+    } finally {
+      this.salvandoFavorito = false;
+    }
   }
 
   getRatingIcon(media: number | null, estrela: number): string {
@@ -72,5 +101,16 @@ export class BookDetailPage implements OnInit {
   getRatingPercentage(estrela: number): number {
     const total = this.book?.avaliacao.total || 0;
     return total ? (this.getRatingCount(estrela) / total) * 100 : 0;
+  }
+
+  private toFavoriteBook(book: BookDetail): FavoriteBook {
+    return {
+      id: book.id,
+      titulo: book.titulo,
+      capa: book.capa,
+      autores: book.autores,
+      primeiraPublicacao: book.primeiraPublicacao,
+      sinopse: book.descricao
+    };
   }
 }

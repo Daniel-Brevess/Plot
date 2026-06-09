@@ -1,6 +1,6 @@
 <ion-content>
   <nav class="custom-nav">
-    <a class="nav-item active" routerLink="/feed">Pra você</a>
+    <a class="nav-item active" routerLink="/feed">Pra voce</a>
     <a class="nav-item" routerLink="/explore">Explorar</a>
     <a class="nav-item" routerLink="/profile">Perfil</a>
   </nav>
@@ -15,35 +15,47 @@
       <p>{{ erro }}</p>
     </div>
 
-    <a class="book-card" *ngFor="let livro of livros" [routerLink]="['/books', livro.id]">
-      <div class="book-cover-container">
-        <img [src]="livro.capa" class="book-cover" [alt]="livro.temCapa ? 'Capa do livro' : 'Capa indisponível'">
-      </div>
+    <article class="book-card" *ngFor="let livro of livros">
+      <button
+        type="button"
+        class="favorite-button"
+        [class.active]="favoritos.has(livro.id)"
+        [disabled]="salvandoFavorito === livro.id"
+        (click)="alternarFavorito($event, livro)"
+        [attr.aria-label]="favoritos.has(livro.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+        <ion-icon [name]="favoritos.has(livro.id) ? 'heart' : 'heart-outline'"></ion-icon>
+      </button>
 
-      <div class="book-info">
-        <h2 class="book-title">{{ livro.titulo }}</h2>
-        <p class="book-author">{{ livro.autores.join(', ') }}</p>
+      <a class="book-main" [routerLink]="['/books', livro.id]">
+        <div class="book-cover-container">
+          <img [src]="livro.capa" class="book-cover" [alt]="livro.temCapa ? 'Capa do livro' : 'Capa indisponivel'">
+        </div>
 
-        <div class="rating" *ngIf="livro.avaliacao.total > 0; else semAvaliacaoFeed">
-          <div class="stars">
-            <ion-icon [name]="getRatingIcon(livro.avaliacao.media, s)" *ngFor="let s of [1,2,3,4,5]"></ion-icon>
+        <div class="book-info">
+          <h2 class="book-title">{{ livro.titulo }}</h2>
+          <p class="book-author">{{ livro.autores.join(', ') }}</p>
+
+          <div class="rating" *ngIf="livro.avaliacao.total > 0; else semAvaliacaoFeed">
+            <div class="stars">
+              <ion-icon [name]="getRatingIcon(livro.avaliacao.media, s)" *ngFor="let s of [1,2,3,4,5]"></ion-icon>
+            </div>
+            <span>{{ livro.avaliacao.media | number:'1.1-1' }} ({{ livro.avaliacao.total }})</span>
           </div>
-          <span>{{ livro.avaliacao.media | number:'1.1-1' }} ({{ livro.avaliacao.total }})</span>
+
+          <ng-template #semAvaliacaoFeed>
+            <p class="no-rating">Sem avaliacoes na Open Library</p>
+          </ng-template>
+
+          <p class="book-description">{{ livro.sinopse }}</p>
+
+          <div class="missing-data" *ngIf="!livro.temCapa || !livro.temAutor || !livro.temSinopse">
+            <span *ngIf="!livro.temCapa">Sem capa</span>
+            <span *ngIf="!livro.temAutor">Autor nao informado</span>
+            <span *ngIf="!livro.temSinopse">Sem sinopse</span>
+          </div>
         </div>
-
-        <ng-template #semAvaliacaoFeed>
-          <p class="no-rating">Sem avaliações na Open Library</p>
-        </ng-template>
-
-        <p class="book-description">{{ livro.sinopse }}</p>
-
-        <div class="missing-data" *ngIf="!livro.temCapa || !livro.temAutor || !livro.temSinopse">
-          <span *ngIf="!livro.temCapa">Sem capa</span>
-          <span *ngIf="!livro.temAutor">Autor não informado</span>
-          <span *ngIf="!livro.temSinopse">Sem sinopse</span>
-        </div>
-      </div>
-    </a>
+      </a>
+    </article>
 
     <button
       *ngIf="livros.length > 0 && temMaisLivros"
@@ -55,7 +67,7 @@
     </button>
 
     <div *ngIf="livros.length === 0 && !erro" class="ion-text-center">
-      <p>Nenhuma recomendação encontrada para seus gêneros.</p>
+      <p>Nenhuma recomendacao encontrada para seus generos.</p>
     </div>
   </div>
 </ion-content>

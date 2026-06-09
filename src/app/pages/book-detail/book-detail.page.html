@@ -22,6 +22,17 @@
         <div class="summary">
           <h1>{{ book.titulo }}</h1>
 
+          <button
+            type="button"
+            class="favorite-action"
+            [class.active]="favorito"
+            [disabled]="salvandoFavorito"
+            (click)="alternarFavorito()"
+            [attr.aria-label]="favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+            <ion-icon [name]="favorito ? 'heart' : 'heart-outline'"></ion-icon>
+            {{ favorito ? 'Favorito' : 'Favoritar' }}
+          </button>
+
           <p class="meta">
             <ion-icon name="person-outline"></ion-icon>
             {{ book.autores.join(', ') }}

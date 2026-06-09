@@ -3,8 +3,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { IonBackButton, IonButton, IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { createOutline, logOutOutline } from 'ionicons/icons';
-import { AuthService } from '../../services/auth';
+import { createOutline, heartOutline, logOutOutline, trashOutline } from 'ionicons/icons';
+import { AuthService, FavoriteBook } from '../../services/auth';
 
 @Component({
   selector: 'app-profile',
@@ -20,17 +20,21 @@ export class ProfilePage implements OnInit {
   nome = 'Leitor Plot';
   email = '';
   foto = 'https://i.pravatar.cc/150';
+  favoritos: FavoriteBook[] = [];
+  carregandoFavoritos = true;
+  removendoFavorito = '';
+  erroFavoritos = '';
 
   constructor() {
-    addIcons({ createOutline, logOutOutline });
+    addIcons({ createOutline, heartOutline, logOutOutline, trashOutline });
   }
 
-  ngOnInit() {
-    this.carregarPerfil();
+  async ngOnInit() {
+    await this.carregarPerfil();
   }
 
-  ionViewWillEnter() {
-    this.carregarPerfil();
+  async ionViewWillEnter() {
+    await this.carregarPerfil();
   }
 
   async sair() {
@@ -38,7 +42,28 @@ export class ProfilePage implements OnInit {
     await this.router.navigate(['/home'], { replaceUrl: true });
   }
 
-  private carregarPerfil() {
+  async removerFavorito(event: Event, bookId: string) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.removendoFavorito) {
+      return;
+    }
+
+    this.removendoFavorito = bookId;
+
+    try {
+      await this.authService.removerFavorito(bookId);
+      this.favoritos = this.favoritos.filter(livro => livro.id !== bookId);
+    } catch (error) {
+      console.error('Erro ao remover favorito:', error);
+      this.erroFavoritos = 'Nao foi possivel remover este favorito.';
+    } finally {
+      this.removendoFavorito = '';
+    }
+  }
+
+  private async carregarPerfil() {
     const usuario = this.authService.getUsuarioAtual();
 
     if (!usuario) {
@@ -50,5 +75,21 @@ export class ProfilePage implements OnInit {
     this.foto = localStorage.getItem(`fotoPerfil:${usuario.uid}`)
       || usuario.photoURL
       || this.foto;
+
+    await this.carregarFavoritos();
+  }
+
+  private async carregarFavoritos() {
+    this.carregandoFavoritos = true;
+    this.erroFavoritos = '';
+
+    try {
+      this.favoritos = await this.authService.listarFavoritos();
+    } catch (error) {
+      console.error('Erro ao carregar favoritos:', error);
+      this.erroFavoritos = 'Nao foi possivel carregar seus favoritos.';
+    } finally {
+      this.carregandoFavoritos = false;
+    }
   }
 }

@@ -28,32 +28,42 @@
   </div>
 
   <div class="favorites-section">
-    <h3 class="section-title">Favoritos:</h3>
+    <h3 class="section-title">Favoritos</h3>
 
-    <div class="book-list">
-      <div class="book-item">
-        <div class="book-cover-placeholder"></div>
-        <div class="book-details">
-          <h4>Crime e castigo</h4>
-          <p>Autor: Dostoiévski</p>
-        </div>
-      </div>
+    <div *ngIf="carregandoFavoritos" class="favorite-state">
+      <p>Carregando favoritos...</p>
+    </div>
 
-      <div class="book-item">
-        <div class="book-cover-placeholder"></div>
-        <div class="book-details">
-          <h4>O Retrato</h4>
-          <p>Autor: Dorian Gray</p>
-        </div>
-      </div>
+    <div *ngIf="!carregandoFavoritos && erroFavoritos" class="favorite-state error">
+      <p>{{ erroFavoritos }}</p>
+    </div>
 
-      <div class="book-item">
-        <div class="book-cover-placeholder"></div>
-        <div class="book-details">
-          <h4>Hábitos Atômicos</h4>
-          <p>Autor: James Clear</p>
-        </div>
-      </div>
+    <div *ngIf="!carregandoFavoritos && !erroFavoritos && favoritos.length === 0" class="favorite-state empty">
+      <ion-icon name="heart-outline"></ion-icon>
+      <p>Nenhum livro favorito ainda.</p>
+    </div>
+
+    <div class="book-list" *ngIf="!carregandoFavoritos && favoritos.length > 0">
+      <article class="book-item" *ngFor="let livro of favoritos">
+        <a class="book-link" [routerLink]="['/books', livro.id]">
+          <img [src]="livro.capa" [alt]="livro.titulo" class="book-cover" />
+
+          <div class="book-details">
+            <h4>{{ livro.titulo }}</h4>
+            <p>{{ livro.autores.join(', ') }}</p>
+            <span *ngIf="livro.primeiraPublicacao">{{ livro.primeiraPublicacao }}</span>
+          </div>
+        </a>
+
+        <button
+          type="button"
+          class="remove-favorite"
+          [disabled]="removendoFavorito === livro.id"
+          (click)="removerFavorito($event, livro.id)"
+          aria-label="Remover dos favoritos">
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </article>
     </div>
   </div>
 </ion-content>

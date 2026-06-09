@@ -1,7 +1,7 @@
 <ion-content class="books-page">
   <div class="page-wrapper">
     <div class="tabs">
-      <a class="tab" routerLink="/feed">Pra você</a>
+      <a class="tab" routerLink="/feed">Pra voce</a>
       <a class="tab active" routerLink="/explore">Explorar</a>
       <a class="tab" routerLink="/profile">Perfil</a>
     </div>
@@ -9,11 +9,11 @@
     <form class="search-panel" (ngSubmit)="buscarLivros()">
       <label>
         <span>Buscar livro</span>
-        <input name="busca" type="search" [(ngModel)]="busca" placeholder="Título, autor ou assunto" />
+        <input name="busca" type="search" [(ngModel)]="busca" placeholder="Titulo, autor ou assunto" />
       </label>
 
       <label>
-        <span>Gênero</span>
+        <span>Genero</span>
         <input name="genero" type="text" [(ngModel)]="genero" placeholder="Romance, fantasia..." />
       </label>
 
@@ -33,33 +33,45 @@
     </div>
 
     <div class="books-list" *ngIf="!loading">
-      <a class="book-card" *ngFor="let book of books" [routerLink]="['/books', book.id]">
-        <img [src]="book.capa" [alt]="book.temCapa ? book.titulo : 'Capa indisponível'" class="book-image" />
+      <article class="book-card" *ngFor="let book of books">
+        <button
+          type="button"
+          class="favorite-button"
+          [class.active]="favoritos.has(book.id)"
+          [disabled]="salvandoFavorito === book.id"
+          (click)="alternarFavorito($event, book)"
+          [attr.aria-label]="favoritos.has(book.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
+          <ion-icon [name]="favoritos.has(book.id) ? 'heart' : 'heart-outline'"></ion-icon>
+        </button>
 
-        <div class="book-info">
-          <h2>{{ book.titulo }}</h2>
-          <p class="author">{{ book.autores.join(', ') }}</p>
+        <a class="book-main" [routerLink]="['/books', book.id]">
+          <img [src]="book.capa" [alt]="book.temCapa ? book.titulo : 'Capa indisponivel'" class="book-image" />
 
-          <div class="rating" *ngIf="book.avaliacao.total > 0; else semAvaliacaoExplore">
-            <div class="stars">
-              <ion-icon [name]="getRatingIcon(book.avaliacao.media, star)" *ngFor="let star of [1, 2, 3, 4, 5]"></ion-icon>
+          <div class="book-info">
+            <h2>{{ book.titulo }}</h2>
+            <p class="author">{{ book.autores.join(', ') }}</p>
+
+            <div class="rating" *ngIf="book.avaliacao.total > 0; else semAvaliacaoExplore">
+              <div class="stars">
+                <ion-icon [name]="getRatingIcon(book.avaliacao.media, star)" *ngFor="let star of [1, 2, 3, 4, 5]"></ion-icon>
+              </div>
+              <span>{{ book.avaliacao.media | number:'1.1-1' }} ({{ book.avaliacao.total }})</span>
             </div>
-            <span>{{ book.avaliacao.media | number:'1.1-1' }} ({{ book.avaliacao.total }})</span>
+
+            <ng-template #semAvaliacaoExplore>
+              <p class="no-rating">Sem avaliacoes na Open Library</p>
+            </ng-template>
+
+            <p>{{ book.sinopse }}</p>
+
+            <div class="missing-data" *ngIf="!book.temCapa || !book.temAutor || !book.temSinopse">
+              <span *ngIf="!book.temCapa">Sem capa</span>
+              <span *ngIf="!book.temAutor">Autor nao informado</span>
+              <span *ngIf="!book.temSinopse">Sem sinopse</span>
+            </div>
           </div>
-
-          <ng-template #semAvaliacaoExplore>
-            <p class="no-rating">Sem avaliações na Open Library</p>
-          </ng-template>
-
-          <p>{{ book.sinopse }}</p>
-
-          <div class="missing-data" *ngIf="!book.temCapa || !book.temAutor || !book.temSinopse">
-            <span *ngIf="!book.temCapa">Sem capa</span>
-            <span *ngIf="!book.temAutor">Autor não informado</span>
-            <span *ngIf="!book.temSinopse">Sem sinopse</span>
-          </div>
-        </div>
-      </a>
+        </a>
+      </article>
     </div>
 
     <button

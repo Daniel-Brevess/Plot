@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { star, starHalf, starOutline } from 'ionicons/icons';
-import { AuthService } from '../../services/auth';
+import { heart, heartOutline, star, starHalf, starOutline } from 'ionicons/icons';
+import { AuthService, FavoriteBook } from '../../services/auth';
 import { BookListItem, BookService } from '../../services/bookservice';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
@@ -19,8 +19,10 @@ export class FeedPage implements OnInit {
   livros: BookListItem[] = [];
   loading = true;
   loadingMore = false;
+  salvandoFavorito = '';
   erro = '';
   temMaisLivros = false;
+  favoritos = new Set<string>();
 
   private generos: string[] = [];
   private paginaAtual = 0;
@@ -31,11 +33,15 @@ export class FeedPage implements OnInit {
     private bookService: BookService,
     private firestore: Firestore
   ) {
-    addIcons({ star, starHalf, starOutline });
+    addIcons({ heart, heartOutline, star, starHalf, starOutline });
   }
 
   async ngOnInit() {
     await this.carregarRecomendacoes();
+  }
+
+  async ionViewWillEnter() {
+    await this.carregarFavoritos();
   }
 
   async carregarRecomendacoes() {
@@ -57,6 +63,7 @@ export class FeedPage implements OnInit {
       if (docSnap.exists()) {
         this.generos = docSnap.data()['preferencias'] || [];
         await this.carregarPaginaDeRecomendacoes();
+        await this.carregarFavoritos();
       }
     } catch (error) {
       console.error('Erro ao carregar recomendações:', error);
@@ -113,5 +120,48 @@ export class FeedPage implements OnInit {
     }
 
     return media >= estrela - 0.5 ? 'star-half' : 'star-outline';
+  }
+
+  async alternarFavorito(event: Event, livro: BookListItem) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.salvandoFavorito) {
+      return;
+    }
+
+    this.salvandoFavorito = livro.id;
+
+    try {
+      if (this.favoritos.has(livro.id)) {
+        await this.authService.removerFavorito(livro.id);
+        this.favoritos.delete(livro.id);
+        return;
+      }
+
+      await this.authService.salvarFavorito(this.toFavoriteBook(livro));
+      this.favoritos.add(livro.id);
+    } catch (error) {
+      console.error('Erro ao atualizar favorito:', error);
+      this.erro = 'Nao foi possivel atualizar seus favoritos.';
+    } finally {
+      this.salvandoFavorito = '';
+    }
+  }
+
+  private async carregarFavoritos() {
+    const favoritos = await this.authService.listarFavoritos();
+    this.favoritos = new Set(favoritos.map(livro => livro.id));
+  }
+
+  private toFavoriteBook(livro: BookListItem): FavoriteBook {
+    return {
+      id: livro.id,
+      titulo: livro.titulo,
+      capa: livro.capa,
+      autores: livro.autores,
+      primeiraPublicacao: livro.primeiraPublicacao,
+      sinopse: livro.sinopse
+    };
   }
 }

@@ -158,14 +158,14 @@
     <li class="done">Edicao do nome persistida no Firebase Authentication e no Firestore.</li>
     <li class="done">Selecao de foto salva localmente por usuario no aparelho.</li>
     <li class="done">E-mail da conta definido como nao editavel pelo perfil.</li>
-    <li class="pending">Substituir os favoritos fixos exibidos no perfil por dados reais.</li>
+    <li class="done">Favoritos reais exibidos no perfil a partir do Firestore.</li>
   </ul>
 
   <h3>Favoritos e avaliacoes</h3>
   <ul>
-    <li class="pending">Implementar botao para favoritar e desfavoritar livros.</li>
-    <li class="pending">Persistir favoritos por usuario no Firestore.</li>
-    <li class="pending">Listar favoritos reais no perfil.</li>
+    <li class="done">Botao para favoritar e desfavoritar livros no Feed, Explorar e Detalhe do Livro.</li>
+    <li class="done">Favoritos persistidos individualmente por usuario no Firestore.</li>
+    <li class="done">Listagem e remocao de favoritos reais no perfil.</li>
     <li class="done">Avaliacoes agregadas exibidas a partir da Open Library.</li>
   </ul>
 
@@ -173,7 +173,7 @@
   <h2>Armazenamento e recursos nativos</h2>
   <ul>
     <li class="done">Firebase Authentication configurado.</li>
-    <li class="done">Firestore usado para preferencias e dados basicos do perfil.</li>
+    <li class="done">Firestore usado para preferencias, favoritos e dados basicos do perfil.</li>
     <li class="done">Configuracao Android do Firebase incluida em <code>android/app/google-services.json</code>.</li>
     <li class="done">Uso simples de armazenamento local para a foto do perfil.</li>
     <li class="pending">Ionic Storage, Preferences e SQLite citados no slide nao estao implementados. Implementar somente se forem realmente necessarios ou remover do slide.</li>
@@ -206,20 +206,19 @@
   <h2>Correcoes necessarias no README e nos slides</h2>
   <ul>
     <li class="pending">Corrigir a codificacao do README: os acentos e emojis aparecem corrompidos em alguns leitores.</li>
-    <li class="pending">Atualizar o slide de resultados: favoritos ainda nao podem ser apresentados como recurso concluido.</li>
+    <li class="done">Busca, favoritos e avaliacoes agora podem ser apresentados como recursos concluidos no slide de resultados.</li>
     <li class="pending">Atualizar o slide de requisitos ou separar claramente "implementado", "em desenvolvimento" e "trabalho futuro".</li>
-    <li class="pending">Corrigir a contradicao entre "consumo passivo de conteudo" e os recursos interativos anunciados, como perfil editavel e favoritos.</li>
+    <li class="pending">Corrigir a contradicao entre "consumo passivo de conteudo" e os recursos interativos anunciados, como perfil editavel.</li>
     <li class="pending">Corrigir a descricao da API: Open Library e gratuita e a integracao atual nao usa API key.</li>
     <li class="pending">Nao afirmar uso de paginacao enquanto ela nao estiver implementada.</li>
     <li class="pending">Nao afirmar uso de camera, SQLite, Preferences, Ionic Storage ou Filesystem enquanto esses recursos nao estiverem implementados.</li>
     <li class="pending">Revisar a afirmacao de Firebase Hosting: o projeto usa Authentication e Firestore, mas nao ha evidencia de hospedagem configurada.</li>
-    <li class="pending">Atualizar a tela "Sobre o Plot", que ainda promete favoritos antes da implementacao do recurso.</li>
+    <li class="done">Tela "Sobre o Plot" alinhada com favoritos implementados.</li>
   </ul>
 
   <h2>Ordem recomendada de trabalho</h2>
   <ol>
     <li class="done"><span class="priority">Fechar a demonstracao principal:</span> logout na interface, capa padrao, ajuste de "Classicos" e protecao de rotas.</li>
-    <li><span class="priority">Proxima etapa funcional:</span> favoritos reais persistidos no Firestore.</li>
     <li><span class="priority">Limpar a qualidade tecnica:</span> lint, avisos do build e testes comportamentais.</li>
     <li><span class="priority">Atualizar a apresentacao:</span> mostrar como concluido somente o que pode ser demonstrado no APK.</li>
   </ol>
