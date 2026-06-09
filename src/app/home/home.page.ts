@@ -117,7 +117,33 @@ export class HomePage implements OnInit {
       await this.direcionarUsuario(credential.user.uid);
     } catch (err) {
       console.error('Erro no Google:', err);
-      alert('Não foi possível entrar com o Google. Verifique a configuração do aplicativo ou tente novamente.');
+      alert(this.getMensagemErroGoogle(err));
     }
+  }
+
+  private getMensagemErroGoogle(err: unknown): string {
+    const error = err as { code?: string; message?: string };
+    const code = error?.code || '';
+    const message = error?.message || '';
+
+    if (code === 'auth/operation-not-allowed') {
+      return 'Login com Google não está habilitado no Firebase Authentication. Ative o provedor Google no console do Firebase.';
+    }
+
+    if (code === 'SIGN_IN_CANCELED' || message.toLowerCase().includes('canceled')) {
+      return 'Login com Google cancelado.';
+    }
+
+    if (
+      message.toLowerCase().includes('developer_error') ||
+      message.toLowerCase().includes('10:') ||
+      message.toLowerCase().includes('client') ||
+      message.toLowerCase().includes('certificate') ||
+      message.toLowerCase().includes('sha')
+    ) {
+      return `Não foi possível entrar com o Google. Confira o Web Client ID, o pacote Android e o SHA-1/SHA-256 no Firebase.\n\nDetalhe: ${message || code}`;
+    }
+
+    return `Não foi possível entrar com o Google. Verifique a configuração do aplicativo ou tente novamente.\n\nDetalhe: ${message || code || 'erro desconhecido'}`;
   }
 }
