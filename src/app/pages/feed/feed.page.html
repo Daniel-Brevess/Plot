@@ -5,31 +5,49 @@
     <a class="nav-item" routerLink="/profile">Perfil</a>
   </nav>
 
-  <div *ngIf="loading" class="ion-text-center" style="margin-top: 50px;">
+  <div *ngIf="loading" class="ion-text-center loading-state">
     <ion-spinner name="crescent"></ion-spinner>
     <p>Buscando livros baseados no seu perfil...</p>
   </div>
 
   <div class="feed-container" *ngIf="!loading">
-    <div class="book-card" *ngFor="let livro of livros">
+    <div *ngIf="erro" class="state-message error">
+      <p>{{ erro }}</p>
+    </div>
+
+    <a class="book-card" *ngFor="let livro of livros" [routerLink]="['/books', livro.id]">
       <div class="book-cover-container">
-        <img [src]="livro.capa" class="book-cover" alt="Capa do livro">
+        <img [src]="livro.capa" class="book-cover" [alt]="livro.temCapa ? 'Capa do livro' : 'Capa indisponível'">
       </div>
-      
+
       <div class="book-info">
         <h2 class="book-title">{{ livro.titulo }}</h2>
-        
+        <p class="book-author">{{ livro.autores.join(', ') }}</p>
+
         <div class="stars">
           <ion-icon name="star-outline" *ngFor="let s of [1,2,3,4,5]"></ion-icon>
         </div>
-        
-        <p class="book-description">
-          {{ livro.descricao }}
-        </p>
+
+        <p class="book-description">{{ livro.sinopse }}</p>
+
+        <div class="missing-data" *ngIf="!livro.temCapa || !livro.temAutor || !livro.temSinopse">
+          <span *ngIf="!livro.temCapa">Sem capa</span>
+          <span *ngIf="!livro.temAutor">Autor não informado</span>
+          <span *ngIf="!livro.temSinopse">Sem sinopse</span>
+        </div>
       </div>
-    </div>
-    
-    <div *ngIf="livros.length === 0" class="ion-text-center">
+    </a>
+
+    <button
+      *ngIf="livros.length > 0 && temMaisLivros"
+      type="button"
+      class="load-more"
+      [disabled]="loadingMore"
+      (click)="carregarMais()">
+      {{ loadingMore ? 'Carregando...' : 'Carregar mais livros' }}
+    </button>
+
+    <div *ngIf="livros.length === 0 && !erro" class="ion-text-center">
       <p>Nenhuma recomendação encontrada para seus gêneros.</p>
     </div>
   </div>

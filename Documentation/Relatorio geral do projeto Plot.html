@@ -132,20 +132,22 @@
     <li class="done">Exibicao de titulo, autor e capa quando fornecidos pela API.</li>
     <li class="done">Imagem padrao local exibida quando a API nao retorna capa.</li>
     <li class="done">Genero "Classicos" mapeado para o assunto <code>classic_literature</code> da Open Library.</li>
-    <li class="pending">Exibir sinopse real dos livros.</li>
+    <li class="done">Exibicao de sinopse real dos livros quando a informacao esta disponivel na Open Library.</li>
     <li class="pending">Exibir avaliacoes reais ou remover as estrelas decorativas.</li>
-    <li class="pending">Implementar busca de livros por texto.</li>
-    <li class="pending">Implementar paginacao ou carregamento progressivo para listas maiores.</li>
+    <li class="done">Busca de livros por texto na pagina Explorar.</li>
+    <li class="done">Carregamento progressivo para listas maiores de livros.</li>
+    <li class="done">Tratamento visual para livros sem capa, autor ou sinopse.</li>
   </ul>
 
   <h3>Navegacao e exploracao</h3>
   <ul>
     <li class="done">Navegacao entre feed, explorar e perfil.</li>
     <li class="done">Pagina Explorar registrada nas rotas e carregando livros da API.</li>
-    <li class="partial">Pagina Explorar.
+    <li class="done">Pagina Explorar.
       <ul>
         <li class="done">Lista inicial funcional usando livros de romance.</li>
-        <li class="pending">Adicionar filtros, busca ou escolha de genero para que a pagina seja realmente exploratoria.</li>
+        <li class="done">Busca por texto e genero implementada.</li>
+        <li class="done">Estados visuais para carregamento, nenhum resultado e erro de busca.</li>
       </ul>
     </li>
   </ul>
@@ -217,7 +219,7 @@
   <h2>Ordem recomendada de trabalho</h2>
   <ol>
     <li class="done"><span class="priority">Fechar a demonstracao principal:</span> logout na interface, capa padrao, ajuste de "Classicos" e protecao de rotas.</li>
-    <li><span class="priority">Etapa pulada nesta rodada:</span> busca e favoritos reais persistidos no Firestore.</li>
+    <li><span class="priority">Proxima etapa funcional:</span> favoritos reais persistidos no Firestore.</li>
     <li><span class="priority">Decidir o escopo das avaliacoes:</span> integrar uma fonte confiavel ou retirar esse item da apresentacao.</li>
     <li><span class="priority">Limpar a qualidade tecnica:</span> lint, avisos do build e testes comportamentais.</li>
     <li><span class="priority">Atualizar a apresentacao:</span> mostrar como concluido somente o que pode ser demonstrado no APK.</li>

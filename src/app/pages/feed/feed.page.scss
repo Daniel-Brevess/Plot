@@ -1,27 +1,31 @@
 :host {
-  --ion-background-color: #E6D5B8; // O bege do fundo
+  --ion-background-color: #e6d5b8;
 }
 
 .custom-nav {
   display: flex;
   justify-content: space-around;
-  padding: 20px 0 10px 0;
-  background: #E6D5B8;
-  
+  padding: 20px 0 10px;
+  background: #e6d5b8;
+
   .nav-item {
-    text-decoration: none;
+    color: #4a2c21;
+    cursor: pointer;
     font-size: 1.1rem;
-    color: #4A2C21;
     font-weight: 500;
     opacity: 0.7;
-    cursor: pointer;
+    text-decoration: none;
 
     &.active {
-      opacity: 1;
+      border-bottom: 3px solid #4a2c21;
       font-weight: 800;
-      border-bottom: 3px solid #4A2C21;
+      opacity: 1;
     }
   }
+}
+
+.loading-state {
+  margin-top: 50px;
 }
 
 .feed-container {
@@ -30,57 +34,117 @@
 
 .book-card {
   display: flex;
+  align-items: flex-start;
   gap: 15px;
   padding: 20px 0;
   border-bottom: 1px solid rgba(74, 44, 33, 0.2);
-  align-items: flex-start;
+  color: inherit;
+  text-decoration: none;
 
   &:last-child {
     border-bottom: none;
+  }
+
+  &:active {
+    opacity: 0.75;
   }
 }
 
 .book-cover-container {
   flex-shrink: 0;
-  
+
   .book-cover {
     width: 100px;
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
-    // Sombra para dar o efeito de livro real
     box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
   }
 }
 
 .book-info {
   display: flex;
+  min-width: 0;
   flex-direction: column;
-  
+
   .book-title {
     margin: 0;
+    color: #8d4925;
     font-size: 1.2rem;
     font-weight: 800;
-    color: #8D4925; // Marrom avermelhado do título
+  }
+
+  .book-author {
+    margin: 4px 0 0;
+    color: #4a2c21;
+    font-size: 0.9rem;
+    font-weight: 700;
   }
 
   .stars {
     margin: 5px 0;
+
     ion-icon {
-      color: #000; // Estrelas pretas conforme a imagem
-      font-size: 1.2rem;
       margin-right: 2px;
+      color: #000;
+      font-size: 1.2rem;
     }
   }
 
   .book-description {
-    margin: 5px 0 0 0;
+    display: -webkit-box;
+    margin: 5px 0 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    color: #4a2c21;
     font-size: 0.95rem;
     line-height: 1.4;
-    color: #4A2C21;
-    display: -webkit-box;
-    -webkit-line-clamp: 3; // Limita a 3 linhas como no design
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
+}
+
+.missing-data {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+
+  span {
+    padding: 3px 7px;
+    border-radius: 8px;
+    background: rgba(74, 44, 33, 0.12);
+    color: #4a2c21;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
+
+.load-more {
+  width: 100%;
+  margin: 18px 0 28px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #4a2c21;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.load-more:disabled {
+  opacity: 0.65;
+}
+
+.state-message {
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  color: #4a2c21;
+  text-align: center;
+}
+
+.state-message.error {
+  background: rgba(122, 41, 41, 0.14);
+  color: #5f1f1f;
 }

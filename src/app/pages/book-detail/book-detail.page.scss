@@ -1,0 +1,159 @@
+.book-detail-page {
+  --background: #e6d5b8;
+}
+
+.page-shell {
+  padding: 18px;
+  color: #2f211b;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #4a2c21;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.state {
+  display: flex;
+  min-height: 55vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.cover {
+  width: 116px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 4px 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+.summary h1 {
+  margin: 0 0 12px;
+  color: #7a3d2a;
+  font-size: 1.55rem;
+  line-height: 1.12;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+  color: #4a2c21;
+  line-height: 1.35;
+}
+
+.section,
+.info-block {
+  margin-top: 20px;
+}
+
+h2 {
+  margin: 0 0 8px;
+  color: #4a2c21;
+  font-size: 1rem;
+}
+
+.description,
+.info-block p,
+blockquote {
+  margin: 0;
+  color: #2f211b;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 6px 9px;
+  border: 1px solid rgba(74, 44, 33, 0.24);
+  border-radius: 8px;
+  background: #f4e8d2;
+  color: #4a2c21;
+  font-size: 0.85rem;
+}
+
+.info-grid {
+  display: grid;
+  gap: 14px;
+}
+
+blockquote {
+  padding: 10px 12px;
+  border-left: 4px solid #8d4925;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.links {
+  display: grid;
+  gap: 10px;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #7a3d2a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.updated {
+  margin: 22px 0 0;
+  color: rgba(47, 33, 27, 0.7);
+  font-size: 0.82rem;
+}
+
+@media (min-width: 720px) {
+  .page-shell {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px;
+  }
+
+  .hero {
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 26px;
+  }
+
+  .cover {
+    width: 170px;
+  }
+
+  .summary h1 {
+    font-size: 2rem;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -22,6 +22,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/explore/explore.page').then(m => m.ExplorePage),
   },
   {
+    path: 'books/:workId',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/book-detail/book-detail.page').then(m => m.BookDetailPage),
+  },
+  {
     path: 'profile',
     canActivate: [authGuard],
     loadComponent: () => import('./pages/profile/profile.page').then(m => m.ProfilePage),

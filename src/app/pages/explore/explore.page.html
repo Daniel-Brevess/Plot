@@ -6,23 +6,66 @@
       <a class="tab" routerLink="/profile">Perfil</a>
     </div>
 
-    <div *ngIf="loading" class="ion-text-center">
+    <form class="search-panel" (ngSubmit)="buscarLivros()">
+      <label>
+        <span>Buscar livro</span>
+        <input name="busca" type="search" [(ngModel)]="busca" placeholder="Título, autor ou assunto" />
+      </label>
+
+      <label>
+        <span>Gênero</span>
+        <input name="genero" type="text" [(ngModel)]="genero" placeholder="Romance, fantasia..." />
+      </label>
+
+      <button type="submit" [disabled]="loading">
+        <ion-icon name="search-outline"></ion-icon>
+        Buscar
+      </button>
+    </form>
+
+    <div *ngIf="loading" class="ion-text-center loading-state">
       <ion-spinner name="crescent"></ion-spinner>
       <p>Buscando livros...</p>
     </div>
 
+    <div *ngIf="!loading && erro" class="state-message error">
+      <p>{{ erro }}</p>
+    </div>
+
     <div class="books-list" *ngIf="!loading">
-      <div class="book-card" *ngFor="let book of books">
-        <img [src]="book.capa" [alt]="book.titulo" class="book-image" />
+      <a class="book-card" *ngFor="let book of books" [routerLink]="['/books', book.id]">
+        <img [src]="book.capa" [alt]="book.temCapa ? book.titulo : 'Capa indisponível'" class="book-image" />
 
         <div class="book-info">
           <h2>{{ book.titulo }}</h2>
+          <p class="author">{{ book.autores.join(', ') }}</p>
+
           <div class="stars">
             <ion-icon name="star-outline" *ngFor="let star of [1, 2, 3, 4, 5]"></ion-icon>
           </div>
-          <p>{{ book.descricao }}</p>
+
+          <p>{{ book.sinopse }}</p>
+
+          <div class="missing-data" *ngIf="!book.temCapa || !book.temAutor || !book.temSinopse">
+            <span *ngIf="!book.temCapa">Sem capa</span>
+            <span *ngIf="!book.temAutor">Autor não informado</span>
+            <span *ngIf="!book.temSinopse">Sem sinopse</span>
+          </div>
         </div>
-      </div>
+      </a>
+    </div>
+
+    <button
+      *ngIf="!loading && books.length > 0 && temMaisLivros"
+      type="button"
+      class="load-more"
+      [disabled]="loadingMore"
+      (click)="carregarMais()">
+      {{ loadingMore ? 'Carregando...' : 'Carregar mais livros' }}
+    </button>
+
+    <div *ngIf="!loading && books.length === 0 && !erro" class="state-message">
+      <p>Nenhum livro encontrado.</p>
     </div>
   </div>
 </ion-content>
