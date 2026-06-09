@@ -24,9 +24,16 @@
         <h2 class="book-title">{{ livro.titulo }}</h2>
         <p class="book-author">{{ livro.autores.join(', ') }}</p>
 
-        <div class="stars">
-          <ion-icon name="star-outline" *ngFor="let s of [1,2,3,4,5]"></ion-icon>
+        <div class="rating" *ngIf="livro.avaliacao.total > 0; else semAvaliacaoFeed">
+          <div class="stars">
+            <ion-icon [name]="getRatingIcon(livro.avaliacao.media, s)" *ngFor="let s of [1,2,3,4,5]"></ion-icon>
+          </div>
+          <span>{{ livro.avaliacao.media | number:'1.1-1' }} ({{ livro.avaliacao.total }})</span>
         </div>
+
+        <ng-template #semAvaliacaoFeed>
+          <p class="no-rating">Sem avaliações na Open Library</p>
+        </ng-template>
 
         <p class="book-description">{{ livro.sinopse }}</p>
 

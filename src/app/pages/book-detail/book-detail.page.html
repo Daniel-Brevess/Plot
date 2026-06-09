@@ -31,8 +31,33 @@
             <ion-icon name="calendar-outline"></ion-icon>
             {{ book.primeiraPublicacao }}
           </p>
+
+          <div class="rating-panel" *ngIf="book.avaliacao.total > 0; else semAvaliacaoDetalhe">
+            <div class="stars">
+              <ion-icon [name]="getRatingIcon(book.avaliacao.media, star)" *ngFor="let star of [1, 2, 3, 4, 5]"></ion-icon>
+            </div>
+            <strong>{{ book.avaliacao.media | number:'1.1-1' }}</strong>
+            <span>{{ book.avaliacao.total }} avaliação{{ book.avaliacao.total === 1 ? '' : 'es' }} na Open Library</span>
+          </div>
+
+          <ng-template #semAvaliacaoDetalhe>
+            <p class="no-rating-detail">Sem avaliações de usuários na Open Library.</p>
+          </ng-template>
         </div>
       </header>
+
+      <section class="section" *ngIf="book.avaliacao.total > 0">
+        <h2>Distribuição das avaliações</h2>
+        <div class="rating-breakdown">
+          <div class="rating-row" *ngFor="let star of [5, 4, 3, 2, 1]">
+            <span>{{ star }} estrelas</span>
+            <div class="rating-bar">
+              <i [style.width.%]="getRatingPercentage(star)"></i>
+            </div>
+            <strong>{{ getRatingCount(star) }}</strong>
+          </div>
+        </div>
+      </section>
 
       <section class="section">
         <h2>Descricao</h2>

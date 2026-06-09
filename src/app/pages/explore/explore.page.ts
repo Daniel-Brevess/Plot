@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { searchOutline, starOutline } from 'ionicons/icons';
+import { searchOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { BookListItem, BookService } from '../../services/bookservice';
 
 @Component({
@@ -29,7 +29,7 @@ export class ExplorePage implements OnInit {
   private readonly livrosPorPagina = 8;
 
   constructor() {
-    addIcons({ searchOutline, starOutline });
+    addIcons({ searchOutline, star, starHalf, starOutline });
   }
 
   async ngOnInit() {
@@ -83,5 +83,17 @@ export class ExplorePage implements OnInit {
     const deduplicados = novosLivros.filter(livro => !this.books.some(item => item.id === livro.id));
     this.books = this.books.concat(deduplicados);
     this.temMaisLivros = novosLivros.length === this.livrosPorPagina;
+  }
+
+  getRatingIcon(media: number | null, estrela: number): string {
+    if (!media) {
+      return 'star-outline';
+    }
+
+    if (media >= estrela) {
+      return 'star';
+    }
+
+    return media >= estrela - 0.5 ? 'star-half' : 'star-outline';
   }
 }

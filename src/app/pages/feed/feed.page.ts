@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { starOutline } from 'ionicons/icons';
+import { star, starHalf, starOutline } from 'ionicons/icons';
 import { AuthService } from '../../services/auth';
 import { BookListItem, BookService } from '../../services/bookservice';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
@@ -31,7 +31,7 @@ export class FeedPage implements OnInit {
     private bookService: BookService,
     private firestore: Firestore
   ) {
-    addIcons({ starOutline });
+    addIcons({ star, starHalf, starOutline });
   }
 
   async ngOnInit() {
@@ -101,5 +101,17 @@ export class FeedPage implements OnInit {
 
     this.livros = this.livros.concat(novosLivros);
     this.temMaisLivros = resultados.some(resultado => resultado.length === this.livrosPorGenero);
+  }
+
+  getRatingIcon(media: number | null, estrela: number): string {
+    if (!media) {
+      return 'star-outline';
+    }
+
+    if (media >= estrela) {
+      return 'star';
+    }
+
+    return media >= estrela - 0.5 ? 'star-half' : 'star-outline';
   }
 }

@@ -8,18 +8,20 @@
 .search-panel{margin:14px 0}
 .search-panel label{color:#4a2c21;font-size:.84rem;font-weight:800}
 .search-panel input{min-height:42px;padding:9px 11px;border:1px solid #bfae8f;border-radius:10px;background:#fff8ec;color:#2d1d12;font:inherit}
-.search-panel button,.load-more{min-height:42px;padding:10px 14px;border:0;border-radius:10px;background:#4a2c21;color:#fff;font-size:1rem;font-weight:800}
+.search-panel button,.load-more{min-height:42px;padding:10px 14px;border:0;background:#4a2c21;color:#fff;font-weight:800}
 button:disabled{opacity:.65}
 .books-list{display:flex;flex-direction:column}
 .book-card{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #b08f6a;color:inherit;text-decoration:none}
 .book-card:last-child{border:0}
-.book-image{width:78px;height:110px;flex-shrink:0;border-radius:12px;object-fit:cover}
+.book-image{width:78px;height:110px;flex-shrink:0;object-fit:cover}
 .book-info{min-width:0}
 .book-info h2{margin:0 0 5px;color:#7a3d2a;font-size:16px;line-height:1.2}
 .book-info .author{margin:0;color:#4a2c21;font-size:13px;font-weight:700}
 .book-info p{display:-webkit-box;margin:8px 0 0;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:4;color:#1e1a17;font-size:14px;line-height:1.35}
-.stars{display:flex;gap:4px;margin-top:6px;color:#d7d019;font-size:18px}
+.rating{display:flex;gap:6px;margin-top:6px;color:#4a2c21;font-size:13px;font-weight:700}
+.stars{color:#7a4a17;font-size:18px}
+.no-rating{font-weight:700}
 .missing-data{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
-.missing-data span{padding:3px 7px;border-radius:8px;background:rgba(74,44,33,.12);color:#4a2c21;font-size:.75rem;font-weight:700}
+.missing-data span{padding:3px 7px;border-radius:8px;background:rgba(74,44,33,.12);font-size:.75rem;font-weight:700}
 .load-more{width:100%;margin-top:16px}
-.state-message{margin:16px 0;padding:12px;border-radius:8px;background:rgba(255,255,255,.34);color:#4a2c21;text-align:center}
+.state-message{margin:16px 0;padding:12px;background:rgba(255,255,255,.34);text-align:center}

@@ -45,9 +45,6 @@
     border-bottom: none;
   }
 
-  &:active {
-    opacity: 0.75;
-  }
 }
 
 .book-cover-container {
@@ -81,14 +78,30 @@
     font-weight: 700;
   }
 
-  .stars {
+  .rating {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
     margin: 5px 0;
+    color: #4a2c21;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
 
+  .stars {
     ion-icon {
       margin-right: 2px;
-      color: #000;
+      color: #7a4a17;
       font-size: 1.2rem;
     }
+  }
+
+  .no-rating {
+    margin: 6px 0 0;
+    color: rgba(74, 44, 33, 0.78);
+    font-size: 0.82rem;
+    font-weight: 700;
   }
 
   .book-description {

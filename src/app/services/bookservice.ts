@@ -13,6 +13,7 @@ export interface BookListItem {
   temCapa: boolean;
   temAutor: boolean;
   temSinopse: boolean;
+  avaliacao: BookRating;
 }
 
 export interface BookDetail {
@@ -29,6 +30,13 @@ export interface BookDetail {
   links: Array<{ titulo: string; url: string }>;
   trechos: string[];
   ultimaAtualizacao: string;
+  avaliacao: BookRating;
+}
+
+export interface BookRating {
+  media: number | null;
+  total: number;
+  distribuicao: Record<1 | 2 | 3 | 4 | 5, number>;
 }
 
 @Injectable({
@@ -87,7 +95,10 @@ export class BookService {
   async getBookDetails(workId: string): Promise<BookDetail> {
     const id = this.getWorkId(workId);
     const work: any = await firstValueFrom(this.http.get(`${this.baseUrl}/works/${id}.json`));
-    const autores = await this.getAuthors(work.authors || []);
+    const [autores, avaliacao] = await Promise.all([
+      this.getAuthors(work.authors || []),
+      this.getRating(id)
+    ]);
 
     return {
       id,
@@ -109,14 +120,18 @@ export class BookService {
       trechos: (work.excerpts || [])
         .map((excerpt: any) => excerpt.excerpt)
         .filter((excerpt: string) => !!excerpt),
-      ultimaAtualizacao: work.last_modified?.value || work.created?.value || 'Nao informado'
+      ultimaAtualizacao: work.last_modified?.value || work.created?.value || 'Nao informado',
+      avaliacao
     };
   }
 
   private async mapSubjectWork(work: any): Promise<BookListItem> {
     const id = this.getWorkId(work.key);
     const autores = this.getListAuthors(work.authors?.map((author: any) => author.name));
-    const resumo = await this.getWorkSummary(id);
+    const [resumo, avaliacao] = await Promise.all([
+      this.getWorkSummary(id),
+      this.getRating(id)
+    ]);
 
     return {
       id,
@@ -128,14 +143,18 @@ export class BookService {
       sinopse: resumo.sinopse,
       temCapa: !!work.cover_id,
       temAutor: autores[0] !== 'Autor desconhecido',
-      temSinopse: resumo.temSinopse
+      temSinopse: resumo.temSinopse,
+      avaliacao
     };
   }
 
   private async mapSearchDoc(doc: any): Promise<BookListItem> {
     const id = this.getWorkId(doc.key);
     const autores = this.getListAuthors(doc.author_name);
-    const resumo = await this.getWorkSummary(id);
+    const [resumo, avaliacao] = await Promise.all([
+      this.getWorkSummary(id),
+      this.getRating(id)
+    ]);
 
     return {
       id,
@@ -147,8 +166,37 @@ export class BookService {
       sinopse: resumo.sinopse,
       temCapa: !!doc.cover_i,
       temAutor: autores[0] !== 'Autor desconhecido',
-      temSinopse: resumo.temSinopse
+      temSinopse: resumo.temSinopse,
+      avaliacao
     };
+  }
+
+  private async getRating(workId: string): Promise<BookRating> {
+    try {
+      const response: any = await firstValueFrom(this.http.get(`${this.baseUrl}/works/${workId}/ratings.json`));
+      const average = Number(response.summary?.average);
+      const count = Number(response.summary?.count || 0);
+      const counts = response.counts || {};
+
+      return {
+        media: count > 0 && Number.isFinite(average) ? average : null,
+        total: count,
+        distribuicao: {
+          1: Number(counts[1] || 0),
+          2: Number(counts[2] || 0),
+          3: Number(counts[3] || 0),
+          4: Number(counts[4] || 0),
+          5: Number(counts[5] || 0)
+        }
+      };
+    } catch (error) {
+      console.error(`Erro ao buscar avaliacao do livro ${workId}:`, error);
+      return {
+        media: null,
+        total: 0,
+        distribuicao: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+      };
+    }
   }
 
   private async getWorkSummary(workId: string): Promise<{ sinopse: string; temSinopse: boolean }> {

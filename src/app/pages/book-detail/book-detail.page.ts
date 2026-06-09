@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { IonButton, IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBackOutline, calendarOutline, openOutline, personOutline, pricetagOutline } from 'ionicons/icons';
+import { arrowBackOutline, calendarOutline, openOutline, personOutline, pricetagOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { BookDetail, BookService } from '../../services/bookservice';
 
 @Component({
@@ -23,7 +23,7 @@ export class BookDetailPage implements OnInit {
   error = '';
 
   constructor() {
-    addIcons({ arrowBackOutline, calendarOutline, openOutline, personOutline, pricetagOutline });
+    addIcons({ arrowBackOutline, calendarOutline, openOutline, personOutline, pricetagOutline, star, starHalf, starOutline });
   }
 
   async ngOnInit() {
@@ -51,5 +51,26 @@ export class BookDetailPage implements OnInit {
 
   voltar() {
     this.location.back();
+  }
+
+  getRatingIcon(media: number | null, estrela: number): string {
+    if (!media) {
+      return 'star-outline';
+    }
+
+    if (media >= estrela) {
+      return 'star';
+    }
+
+    return media >= estrela - 0.5 ? 'star-half' : 'star-outline';
+  }
+
+  getRatingCount(estrela: number): number {
+    return this.book?.avaliacao.distribuicao[estrela as 1 | 2 | 3 | 4 | 5] || 0;
+  }
+
+  getRatingPercentage(estrela: number): number {
+    const total = this.book?.avaliacao.total || 0;
+    return total ? (this.getRatingCount(estrela) / total) * 100 : 0;
   }
 }
