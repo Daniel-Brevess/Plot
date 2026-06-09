@@ -17,10 +17,10 @@ export class EditProfilePage implements OnInit {
   private router = inject(Router);
 
   user = {
-    nome: '',
-    email: ''
+    nome: ''
   };
 
+  email = '';
   foto = 'https://i.pravatar.cc/150';
   salvando = false;
 
@@ -33,7 +33,7 @@ export class EditProfilePage implements OnInit {
     }
 
     this.user.nome = usuario.displayName || '';
-    this.user.email = usuario.email || '';
+    this.email = usuario.email || '';
     this.foto = localStorage.getItem(this.fotoStorageKey(usuario.uid))
       || usuario.photoURL
       || this.foto;

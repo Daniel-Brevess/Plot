@@ -11,7 +11,12 @@
    
     <ion-input placeholder="Nome" [(ngModel)]="user.nome"></ion-input>
 
-    <ion-input placeholder="Email" [(ngModel)]="user.email" [readonly]="true"></ion-input>
+    <ion-input
+      placeholder="Email"
+      [value]="email"
+      [readonly]="true"
+      [disabled]="true">
+    </ion-input>
 
     
     <ion-button expand="block" (click)="salvar()" [disabled]="salvando || !user.nome.trim()">

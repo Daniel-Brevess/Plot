@@ -37,6 +37,13 @@ ion-input::part(native) {
   padding: 12px 15px;
 }
 
+ion-input[disabled] {
+  opacity: 1;
+
+  --background: #6a4f3a;
+  --color: #f5eee6;
+}
+
 ion-button {
   margin-top: 15px;
   --background: #7a4a2a;
