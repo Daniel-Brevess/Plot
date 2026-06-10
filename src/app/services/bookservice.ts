@@ -45,7 +45,19 @@ export interface BookRating {
 export class BookService {
   private baseUrl = 'https://openlibrary.org';
   private subjectAliases: Record<string, string> = {
+    'aventura': 'adventure',
+    'autoajuda': 'self_help',
+    'biografia': 'biography',
     'classicos': 'classic_literature',
+    'drama': 'drama',
+    'fantasia': 'fantasy',
+    'ficcao cientifica': 'science_fiction',
+    'ficcao_cientifica': 'science_fiction',
+    'historia': 'history',
+    'poesia': 'poetry',
+    'romance': 'romance',
+    'suspense': 'thriller',
+    'terror': 'horror',
     'clássicos': 'classic_literature',
     'clÃ¡ssicos': 'classic_literature',
     'clÃƒÂ¡ssicos': 'classic_literature'

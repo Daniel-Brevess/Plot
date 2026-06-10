@@ -5,6 +5,7 @@ import { IonBackButton, IonButton, IonContent, IonIcon } from '@ionic/angular/st
 import { addIcons } from 'ionicons';
 import { createOutline, heartOutline, logOutOutline, trashOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
+import { normalizeGenres } from '../../services/genre-preferences';
 
 @Component({
   selector: 'app-profile',
@@ -97,7 +98,7 @@ export class ProfilePage implements OnInit {
 
   private async carregarPreferencias() {
     try {
-      this.preferencias = await this.authService.carregarPreferencias();
+      this.preferencias = normalizeGenres(await this.authService.carregarPreferencias());
     } catch (error) {
       console.error('Erro ao carregar preferencias:', error);
       this.preferencias = [];

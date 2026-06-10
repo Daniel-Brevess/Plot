@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonButton, IonContent } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth';
+import { PLOT_GENRES, normalizeGenres } from '../../services/genre-preferences';
 
 @Component({
   selector: 'app-questionario',
@@ -13,20 +14,7 @@ import { AuthService } from '../../services/auth';
   imports: [IonContent, IonButton, CommonModule, FormsModule]
 })
 export class QuestionarioPage implements OnInit {
-  genres: string[] = [
-    'Romance',
-    'Ficcao Cientifica',
-    'Fantasia',
-    'Terror',
-    'Biografia',
-    'Historia',
-    'Suspense',
-    'Autoajuda',
-    'Poesia',
-    'Drama',
-    'Aventura',
-    'Classicos'
-  ];
+  genres = PLOT_GENRES;
 
   form = {
     selectedGenres: [] as string[]
@@ -94,7 +82,7 @@ export class QuestionarioPage implements OnInit {
     this.erro = '';
 
     try {
-      this.form.selectedGenres = await this.authService.carregarPreferencias();
+      this.form.selectedGenres = normalizeGenres(await this.authService.carregarPreferencias());
     } catch (error) {
       console.error('Erro ao carregar preferencias:', error);
       this.erro = 'Nao foi possivel carregar suas preferencias atuais.';

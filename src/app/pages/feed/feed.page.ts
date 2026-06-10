@@ -6,6 +6,7 @@ import { addIcons } from 'ionicons';
 import { heart, heartOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
 import { BookListItem, BookService } from '../../services/bookservice';
+import { normalizeGenres } from '../../services/genre-preferences';
 
 @Component({
   selector: 'app-feed',
@@ -40,7 +41,7 @@ export class FeedPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    const preferencias = await this.authService.carregarPreferencias();
+    const preferencias = normalizeGenres(await this.authService.carregarPreferencias());
     const preferenciasKey = preferencias.join('|');
 
     if (this.preferenciasKey && preferenciasKey !== this.preferenciasKey) {
@@ -58,7 +59,7 @@ export class FeedPage implements OnInit {
     this.paginaAtual = 0;
 
     try {
-      this.generos = await this.authService.carregarPreferencias();
+      this.generos = normalizeGenres(await this.authService.carregarPreferencias());
       this.preferenciasKey = this.generos.join('|');
       await this.carregarPaginaDeRecomendacoes();
       await this.carregarFavoritos();
