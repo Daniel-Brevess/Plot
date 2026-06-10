@@ -1,14 +1,24 @@
 <ion-content>
-
   <div class="container">
-
     <h2>Editar Perfil</h2>
 
- 
-    <img [src]="foto" class="avatar" (click)="selecionarFoto()" />
-    <input type="file" hidden (change)="onFileSelected($event)" />
+    <img [src]="foto" class="avatar" alt="Foto do perfil" (click)="escolherFoto()" />
+    <input type="file" hidden accept="image/*" (change)="onFileSelected($event)" />
 
-   
+    <div class="photo-actions">
+      <ion-button fill="outline" type="button" (click)="escolherFoto()" [disabled]="carregandoFoto">
+        Escolher foto
+      </ion-button>
+
+      <ion-button fill="outline" type="button" (click)="tirarFoto()" [disabled]="carregandoFoto">
+        Tirar foto
+      </ion-button>
+    </div>
+
+    <button type="button" class="file-fallback" (click)="selecionarArquivo()">
+      Selecionar arquivo
+    </button>
+
     <ion-input placeholder="Nome" [(ngModel)]="user.nome"></ion-input>
 
     <ion-input
@@ -18,11 +28,8 @@
       [disabled]="true">
     </ion-input>
 
-    
     <ion-button expand="block" (click)="salvar()" [disabled]="salvando || !user.nome.trim()">
-      {{ salvando ? 'Salvando...' : 'Salvar Alterações' }}
+      {{ salvando ? 'Salvando...' : 'Salvar Alteracoes' }}
     </ion-button>
-
   </div>
-
 </ion-content>

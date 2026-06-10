@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../../services/auth';
+import { FeedbackService } from '../../services/feedback.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -14,6 +16,7 @@ import { AuthService } from '../../services/auth';
 })
 export class EditProfilePage implements OnInit {
   private authService = inject(AuthService);
+  private feedback = inject(FeedbackService);
   private router = inject(Router);
 
   user = {
@@ -23,6 +26,7 @@ export class EditProfilePage implements OnInit {
   email = '';
   foto = 'https://i.pravatar.cc/150';
   salvando = false;
+  carregandoFoto = false;
 
   ngOnInit() {
     const usuario = this.authService.getUsuarioAtual();
@@ -51,17 +55,25 @@ export class EditProfilePage implements OnInit {
     try {
       await this.authService.atualizarPerfil(this.user.nome.trim());
       localStorage.setItem(this.fotoStorageKey(usuario.uid), this.foto);
-      alert('Perfil atualizado!');
+      await this.feedback.sucesso('Perfil atualizado.');
       await this.router.navigate(['/profile']);
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
-      alert('Não foi possível atualizar o perfil. Tente novamente.');
+      await this.feedback.erro('Nao foi possivel atualizar o perfil. Tente novamente.');
     } finally {
       this.salvando = false;
     }
   }
 
-  selecionarFoto() {
+  async escolherFoto() {
+    await this.carregarFoto(CameraSource.Photos);
+  }
+
+  async tirarFoto() {
+    await this.carregarFoto(CameraSource.Camera);
+  }
+
+  selecionarArquivo() {
     const input = document.querySelector('input[type="file"]') as HTMLInputElement | null;
     input?.click();
   }
@@ -70,14 +82,40 @@ export class EditProfilePage implements OnInit {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
-    if (file) {
-      const reader = new FileReader();
+    if (!file) {
+      return;
+    }
 
-      reader.onload = () => {
-        this.foto = reader.result as string;
-      };
+    const reader = new FileReader();
 
-      reader.readAsDataURL(file);
+    reader.onload = async () => {
+      this.foto = reader.result as string;
+      await this.feedback.sucesso('Foto pronta para salvar.');
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+  private async carregarFoto(source: CameraSource) {
+    this.carregandoFoto = true;
+
+    try {
+      const image = await Camera.getPhoto({
+        quality: 75,
+        allowEditing: true,
+        resultType: CameraResultType.DataUrl,
+        source
+      });
+
+      if (image.dataUrl) {
+        this.foto = image.dataUrl;
+        await this.feedback.sucesso('Foto pronta para salvar.');
+      }
+    } catch (error) {
+      console.error('Erro ao carregar foto:', error);
+      await this.feedback.info('Nenhuma foto foi selecionada.');
+    } finally {
+      this.carregandoFoto = false;
     }
   }
 

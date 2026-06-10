@@ -6,6 +6,7 @@ import { addIcons } from 'ionicons';
 import { arrowBackOutline, calendarOutline, heart, heartOutline, openOutline, personOutline, pricetagOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
 import { BookDetail, BookService } from '../../services/bookservice';
+import { FeedbackService } from '../../services/feedback.service';
 
 @Component({
   selector: 'app-book-detail',
@@ -19,6 +20,7 @@ export class BookDetailPage implements OnInit {
   private bookService = inject(BookService);
   private location = inject(Location);
   private authService = inject(AuthService);
+  private feedback = inject(FeedbackService);
 
   book: BookDetail | null = null;
   loading = true;
@@ -69,14 +71,17 @@ export class BookDetailPage implements OnInit {
       if (this.favorito) {
         await this.authService.removerFavorito(this.book.id);
         this.favorito = false;
+        await this.feedback.info('Livro removido dos favoritos.');
         return;
       }
 
       await this.authService.salvarFavorito(this.toFavoriteBook(this.book));
       this.favorito = true;
+      await this.feedback.sucesso('Livro adicionado aos favoritos.');
     } catch (error) {
       console.error('Erro ao atualizar favorito:', error);
       this.error = 'Nao foi possivel atualizar seus favoritos.';
+      await this.feedback.erro(this.error);
     } finally {
       this.salvandoFavorito = false;
     }

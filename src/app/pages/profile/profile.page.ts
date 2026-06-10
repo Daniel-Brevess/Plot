@@ -5,6 +5,7 @@ import { IonBackButton, IonButton, IonContent, IonIcon } from '@ionic/angular/st
 import { addIcons } from 'ionicons';
 import { createOutline, heartOutline, logOutOutline, trashOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
+import { FeedbackService } from '../../services/feedback.service';
 import { normalizeGenres } from '../../services/genre-preferences';
 
 @Component({
@@ -16,6 +17,7 @@ import { normalizeGenres } from '../../services/genre-preferences';
 })
 export class ProfilePage implements OnInit {
   private authService = inject(AuthService);
+  private feedback = inject(FeedbackService);
   private router = inject(Router);
 
   nome = 'Leitor Plot';
@@ -57,9 +59,11 @@ export class ProfilePage implements OnInit {
     try {
       await this.authService.removerFavorito(bookId);
       this.favoritos = this.favoritos.filter(livro => livro.id !== bookId);
+      await this.feedback.info('Livro removido dos favoritos.');
     } catch (error) {
       console.error('Erro ao remover favorito:', error);
       this.erroFavoritos = 'Nao foi possivel remover este favorito.';
+      await this.feedback.erro(this.erroFavoritos);
     } finally {
       this.removendoFavorito = '';
     }

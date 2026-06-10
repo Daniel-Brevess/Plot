@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../services/auth';
 import { onAuthStateChanged } from '@angular/fire/auth';
-import { 
-  IonHeader, 
-  IonToolbar, 
-  IonTitle, 
-  IonContent, 
-  IonButton, 
-  IonModal, 
-  IonItem, 
+import { Router, RouterModule } from '@angular/router';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonIcon,
   IonInput,
-  IonIcon 
+  IonItem,
+  IonModal,
+  IonTitle,
+  IonToolbar
 } from '@ionic/angular/standalone';
+import { AuthService } from '../services/auth';
+import { FeedbackService } from '../services/feedback.service';
 
 @Component({
   selector: 'app-home',
@@ -21,34 +22,34 @@ import {
   styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
-    IonHeader, 
-    IonToolbar, 
-    IonTitle, 
-    IonContent, 
-    IonButton, 
-    RouterModule, 
-    IonModal, 
-    IonItem, 
-    IonInput, 
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButton,
+    RouterModule,
+    IonModal,
+    IonItem,
+    IonInput,
     IonIcon,
     FormsModule
-  ],
+  ]
 })
 export class HomePage implements OnInit {
-  // Inputs do formulário
   email = '';
   senha = '';
   nome = '';
-
-  // Controle de estado dos Modais
   isLoginOpen = false;
   isRegisterOpen = false;
   recuperandoSenha = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private feedback: FeedbackService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    // Verifica automaticamente se o usuário já está logado ao abrir o app
     onAuthStateChanged(this.authService.auth, async (user) => {
       if (user) {
         await this.direcionarUsuario(user.uid);
@@ -56,7 +57,6 @@ export class HomePage implements OnInit {
     });
   }
 
-  // Funções para abrir/fechar modais
   setLoginOpen(isOpen: boolean) {
     this.isLoginOpen = isOpen;
   }
@@ -65,46 +65,37 @@ export class HomePage implements OnInit {
     this.isRegisterOpen = isOpen;
   }
 
-  // Lógica central de navegação baseada no Firestore
   async direcionarUsuario(uid: string) {
     try {
       const jaFezQuestionario = await this.authService.usuarioTemPreferencias(uid);
-      
-      if (jaFezQuestionario) {
-        console.log('Usuário já tem perfil, indo para o Feed...');
-        this.router.navigate(['/feed'], { replaceUrl: true });
-      } else {
-        console.log('Usuário novo, indo para o Questionário...');
-        this.router.navigate(['/questionario'], { replaceUrl: true });
-      }
+      await this.router.navigate([jaFezQuestionario ? '/feed' : '/questionario'], { replaceUrl: true });
     } catch (error) {
-      console.error('Erro ao verificar preferências:', error);
+      console.error('Erro ao verificar preferencias:', error);
+      await this.feedback.erro('Nao foi possivel carregar suas preferencias. Tente entrar novamente.');
     }
   }
 
   async cadastrar() {
     try {
-      const credential = await this.authService.cadastrar(this.nome, this.email, this.senha);
-      console.log('Usuário cadastrado!');
-      
+      await this.authService.cadastrar(this.nome, this.email, this.senha);
       this.setRegisterOpen(false);
-      // Após o cadastro, sempre vai para o questionário primeiro
-      this.router.navigate(['/questionario'], { replaceUrl: true });
+      await this.feedback.sucesso('Conta criada. Escolha seus generos para montar o feed.');
+      await this.router.navigate(['/questionario'], { replaceUrl: true });
     } catch (err) {
       console.error('Erro no cadastro:', err);
-      alert('Erro ao criar conta. Verifique os dados.');
+      await this.feedback.erro(this.getMensagemErroCadastro(err));
     }
   }
 
   async login() {
     try {
       const credential = await this.authService.login(this.email, this.senha);
-      
       this.setLoginOpen(false);
+      await this.feedback.sucesso('Login realizado.');
       await this.direcionarUsuario(credential.user.uid);
     } catch (err) {
       console.error('Erro no login:', err);
-      alert('E-mail ou senha incorretos.');
+      await this.feedback.erro(this.getMensagemErroLogin(err));
     }
   }
 
@@ -112,7 +103,7 @@ export class HomePage implements OnInit {
     const email = this.email.trim();
 
     if (!email) {
-      alert('Digite seu e-mail para receber o link de recuperação de senha.');
+      await this.feedback.info('Digite seu e-mail para receber o link de recuperacao.');
       return;
     }
 
@@ -120,10 +111,10 @@ export class HomePage implements OnInit {
 
     try {
       await this.authService.recuperarSenha(email);
-      alert('Enviamos um link de recuperação de senha para o seu e-mail.');
+      await this.feedback.sucesso('Link de recuperacao enviado para seu e-mail.');
     } catch (err) {
-      console.error('Erro na recuperação de senha:', err);
-      alert(this.getMensagemErroRecuperacaoSenha(err));
+      console.error('Erro na recuperacao de senha:', err);
+      await this.feedback.erro(this.getMensagemErroRecuperacaoSenha(err));
     } finally {
       this.recuperandoSenha = false;
     }
@@ -132,14 +123,43 @@ export class HomePage implements OnInit {
   async loginGoogle() {
     try {
       const credential = await this.authService.loginComGoogle();
-      
       this.setLoginOpen(false);
       this.setRegisterOpen(false);
-      
+      await this.feedback.sucesso('Login com Google realizado.');
       await this.direcionarUsuario(credential.user.uid);
     } catch (err) {
       console.error('Erro no Google:', err);
-      alert(this.getMensagemErroGoogle(err));
+      await this.feedback.erro(this.getMensagemErroGoogle(err));
+    }
+  }
+
+  private getMensagemErroCadastro(err: unknown): string {
+    const error = err as { code?: string };
+
+    switch (error?.code) {
+      case 'auth/email-already-in-use':
+        return 'Este e-mail ja esta cadastrado. Tente entrar na conta.';
+      case 'auth/invalid-email':
+        return 'Digite um e-mail valido para criar a conta.';
+      case 'auth/weak-password':
+        return 'Use uma senha mais forte, com pelo menos 6 caracteres.';
+      default:
+        return 'Nao foi possivel criar a conta. Verifique os dados e tente novamente.';
+    }
+  }
+
+  private getMensagemErroLogin(err: unknown): string {
+    const error = err as { code?: string };
+
+    switch (error?.code) {
+      case 'auth/invalid-email':
+        return 'Digite um e-mail valido para entrar.';
+      case 'auth/invalid-credential':
+      case 'auth/wrong-password':
+      case 'auth/user-not-found':
+        return 'E-mail ou senha incorretos.';
+      default:
+        return 'Nao foi possivel entrar. Verifique os dados e tente novamente.';
     }
   }
 
@@ -147,9 +167,10 @@ export class HomePage implements OnInit {
     const error = err as { code?: string; message?: string };
     const code = error?.code || '';
     const message = error?.message || '';
+    const detail = message || code || 'erro desconhecido';
 
     if (code === 'auth/operation-not-allowed') {
-      return 'Login com Google não está habilitado no Firebase Authentication. Ative o provedor Google no console do Firebase.';
+      return 'Login com Google nao esta habilitado no Firebase Authentication.';
     }
 
     if (code === 'SIGN_IN_CANCELED' || message.toLowerCase().includes('canceled')) {
@@ -163,10 +184,10 @@ export class HomePage implements OnInit {
       message.toLowerCase().includes('certificate') ||
       message.toLowerCase().includes('sha')
     ) {
-      return `Não foi possível entrar com o Google. Confira o Web Client ID, o pacote Android e o SHA-1/SHA-256 no Firebase.\n\nDetalhe: ${message || code}`;
+      return `Nao foi possivel entrar com o Google. Confira Web Client ID, pacote Android e SHA no Firebase. Detalhe: ${detail}`;
     }
 
-    return `Não foi possível entrar com o Google. Verifique a configuração do aplicativo ou tente novamente.\n\nDetalhe: ${message || code || 'erro desconhecido'}`;
+    return `Nao foi possivel entrar com o Google. Verifique a configuracao do aplicativo ou tente novamente. Detalhe: ${detail}`;
   }
 
   private getMensagemErroRecuperacaoSenha(err: unknown): string {
@@ -174,11 +195,11 @@ export class HomePage implements OnInit {
 
     switch (error?.code) {
       case 'auth/invalid-email':
-        return 'Digite um e-mail válido para recuperar a senha.';
+        return 'Digite um e-mail valido para recuperar a senha.';
       case 'auth/user-not-found':
-        return 'Não encontramos uma conta com esse e-mail.';
+        return 'Nao encontramos uma conta com esse e-mail.';
       default:
-        return 'Não foi possível enviar o e-mail de recuperação. Tente novamente.';
+        return 'Nao foi possivel enviar o e-mail de recuperacao. Tente novamente.';
     }
   }
 }

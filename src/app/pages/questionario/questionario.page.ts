@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonButton, IonContent } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth';
+import { FeedbackService } from '../../services/feedback.service';
 import { PLOT_GENRES, normalizeGenres } from '../../services/genre-preferences';
 
 @Component({
@@ -26,6 +27,7 @@ export class QuestionarioPage implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private feedback: FeedbackService,
     private router: Router
   ) {}
 
@@ -68,10 +70,12 @@ export class QuestionarioPage implements OnInit {
 
     try {
       await this.authService.salvarPreferencias(usuario.uid, this.form.selectedGenres);
+      await this.feedback.sucesso('Preferencias salvas. Atualizando seu feed.');
       await this.router.navigate(['/feed'], { replaceUrl: true });
     } catch (error) {
       console.error('Erro ao persistir preferencias:', error);
       this.erro = 'Nao foi possivel salvar suas preferencias. Tente novamente.';
+      await this.feedback.erro(this.erro);
     } finally {
       this.submitting = false;
     }

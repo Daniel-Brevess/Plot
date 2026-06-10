@@ -20,6 +20,31 @@ h2 {
   border-radius: 50%;
   margin-bottom: 20px;
   cursor: pointer;
+  object-fit: cover;
+}
+
+.photo-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.photo-actions ion-button {
+  margin: 0;
+  --background: transparent;
+  --border-color: #7a4a2a;
+  --color: #4a2c21;
+  font-size: 0.88rem;
+}
+
+.file-fallback {
+  margin-bottom: 18px;
+  border: 0;
+  background: transparent;
+  color: #4a2c21;
+  font-weight: 700;
 }
 
 ion-input {

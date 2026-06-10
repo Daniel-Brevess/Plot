@@ -145,6 +145,7 @@
   <h3>Navegacao e exploracao</h3>
   <ul>
     <li class="done">Navegacao entre feed, explorar e perfil.</li>
+    <li class="done">Botao visual "Sobre o Plot" inserido no perfil sem navegacao ativa, aguardando implementacao da tela pelo grupo.</li>
     <li class="done">Pagina Explorar registrada nas rotas e carregando livros da API.</li>
     <li class="done">Pagina Explorar.
       <ul>
@@ -159,7 +160,7 @@
   <ul>
     <li class="done">Perfil exibindo nome e e-mail do usuario autenticado.</li>
     <li class="done">Edicao do nome persistida no Firebase Authentication e no Firestore.</li>
-    <li class="done">Selecao de foto salva localmente por usuario no aparelho.</li>
+    <li class="done">Selecao de foto pela galeria e captura pela camera para atualizar a foto do perfil.</li>
     <li class="done">E-mail da conta definido como nao editavel pelo perfil.</li>
     <li class="done">Favoritos reais exibidos no perfil a partir do Firestore.</li>
   </ul>
@@ -179,6 +180,7 @@
     <li class="done">Firestore usado para preferencias, favoritos e dados basicos do perfil.</li>
     <li class="done">Configuracao Android do Firebase incluida em <code>android/app/google-services.json</code>.</li>
     <li class="done">Uso simples de armazenamento local para a foto do perfil.</li>
+    <li class="done">Camera do Capacitor instalada e usada na edicao do perfil.</li>
     <li class="pending">Ionic Storage, Preferences e SQLite citados no slide nao estao implementados. Implementar somente se forem realmente necessarios ou remover do slide.</li>
     <li class="pending">Filesystem com arquivos CSV e JSON citado no slide nao esta implementado. Implementar ou remover do slide.</li>
     <li class="pending">Criar e incluir o modelo ER anunciado no slide, caso ele faca parte da entrega.</li>
@@ -188,12 +190,13 @@
         <li class="pending">Usar o plugin em alguma interacao ou remover a afirmacao de uso.</li>
       </ul>
     </li>
-    <li class="pending">Camera citada no slide nao esta instalada nem utilizada. Implementar ou apresentar como trabalho futuro.</li>
   </ul>
 
   <h2>Qualidade tecnica</h2>
   <ul>
     <li class="done">Build web concluido com sucesso.</li>
+    <li class="done">Mensagens mais claras para falhas de login, cadastro, recuperacao de senha e carregamento.</li>
+    <li class="done">Feedback discreto por toast em acoes como favoritar, remover favorito, salvar perfil e salvar preferencias.</li>
     <li class="done">Build Android concluido com sucesso.</li>
     <li class="done">APK Android atualizado apos as correcoes.</li>
     <li class="done">Relatorio <code>signingReport</code> executado para confirmar SHA-1 e SHA-256 debug.</li>
@@ -214,7 +217,7 @@
     <li class="pending">Corrigir a contradicao entre "consumo passivo de conteudo" e os recursos interativos anunciados, como perfil editavel.</li>
     <li class="pending">Corrigir a descricao da API: Open Library e gratuita e a integracao atual nao usa API key.</li>
     <li class="pending">Nao afirmar uso de paginacao enquanto ela nao estiver implementada.</li>
-    <li class="pending">Nao afirmar uso de camera, SQLite, Preferences, Ionic Storage ou Filesystem enquanto esses recursos nao estiverem implementados.</li>
+    <li class="pending">Nao afirmar uso de SQLite, Preferences, Ionic Storage ou Filesystem enquanto esses recursos nao estiverem implementados.</li>
     <li class="pending">Revisar a afirmacao de Firebase Hosting: o projeto usa Authentication e Firestore, mas nao ha evidencia de hospedagem configurada.</li>
     <li class="done">Tela "Sobre o Plot" alinhada com favoritos implementados.</li>
   </ul>
