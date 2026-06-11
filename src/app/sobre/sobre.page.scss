@@ -47,6 +47,21 @@
   font-weight: bold;
 }
 
+.descricao p {
+  color: #000 !important;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.descricao-titulo {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
 // Configuração do Scroll Horizontal
 .members-scroll {
   display: flex;
@@ -92,9 +107,14 @@
 }
 
 .btn-back {
-  margin-top: auto;
-  color: #4A2C21;
+  display: block;
+  width: 120px;
+  text-align: center;
+  margin: 30px auto 0;
+  padding: 12px 25px;
+  background-color: #4A2C21;
+  color: white;
   text-decoration: none;
   font-weight: bold;
-  padding: 15px;
+  border-radius: 10px;
 }
