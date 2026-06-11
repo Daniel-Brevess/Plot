@@ -41,6 +41,7 @@ export class HomePage implements OnInit {
   nome = '';
   isLoginOpen = false;
   isRegisterOpen = false;
+  recuperandoSenha = false;
 
   constructor(
     private authService: AuthService,
@@ -95,6 +96,27 @@ export class HomePage implements OnInit {
     } catch (err) {
       console.error('Erro no login:', err);
       await this.feedback.erro(this.getMensagemErroLogin(err));
+    }
+  }
+
+  async recuperarSenha(emailValue?: string | number | null) {
+    const email = String(emailValue ?? this.email).trim().toLowerCase();
+
+    if (!email) {
+      await this.feedback.info('Digite seu e-mail para receber o link de recuperacao.');
+      return;
+    }
+
+    this.recuperandoSenha = true;
+
+    try {
+      await this.authService.recuperarSenha(email);
+      await this.feedback.sucesso('Se este e-mail estiver cadastrado, o link foi enviado. Verifique a caixa de entrada e o spam.');
+    } catch (err) {
+      console.error('Erro na recuperacao de senha:', err);
+      await this.feedback.erro(this.getMensagemErroRecuperacaoSenha(err));
+    } finally {
+      this.recuperandoSenha = false;
     }
   }
 
@@ -168,4 +190,18 @@ export class HomePage implements OnInit {
     return `Nao foi possivel entrar com o Google. Verifique a configuracao do aplicativo ou tente novamente. Detalhe: ${detail}`;
   }
 
+  private getMensagemErroRecuperacaoSenha(err: unknown): string {
+    const error = err as { code?: string };
+
+    switch (error?.code) {
+      case 'auth/invalid-email':
+        return 'Digite um e-mail valido para recuperar a senha.';
+      case 'auth/user-not-found':
+        return 'Nao encontramos uma conta com esse e-mail.';
+      case 'auth/too-many-requests':
+        return 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';
+      default:
+        return 'Nao foi possivel enviar o e-mail de recuperacao. Tente novamente.';
+    }
+  }
 }

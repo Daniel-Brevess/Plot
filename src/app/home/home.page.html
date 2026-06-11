@@ -38,12 +38,20 @@
         <div class="modal-content">
           <h3>Acessar Plot</h3>
           <ion-item lines="none" class="custom-input">
-            <ion-input type="email" [(ngModel)]="email" labelPlacement="floating" placeholder="E-mail"></ion-input>
+            <ion-input #loginEmailInput type="email" [(ngModel)]="email" labelPlacement="floating" placeholder="E-mail"></ion-input>
           </ion-item>
           <ion-item lines="none" class="custom-input">
             <ion-input type="password" [(ngModel)]="senha" labelPlacement="floating"placeholder="Senha"></ion-input>
           </ion-item>
           <ion-button (click)="login()" expand="block" class="btn-modal">Entrar</ion-button>
+          <ion-button
+            (click)="recuperarSenha(loginEmailInput.value)"
+            expand="block"
+            fill="clear"
+            class="btn-forgot"
+            [disabled]="recuperandoSenha">
+            {{ recuperandoSenha ? 'Enviando...' : 'Esqueci minha senha' }}
+          </ion-button>
         </div>
       </ng-template>
     </ion-modal>

@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword, 
   EmailAuthProvider,
   reauthenticateWithCredential,
+  sendPasswordResetEmail,
   signInWithCredential,
   signInWithEmailAndPassword, 
   signInWithPopup, 
@@ -93,6 +94,13 @@ export class AuthService {
     const credential = EmailAuthProvider.credential(usuario.email, senhaAtual);
     await reauthenticateWithCredential(usuario, credential);
     return updatePassword(usuario, novaSenha);
+  }
+
+  recuperarSenha(email: string) {
+    return sendPasswordResetEmail(this.auth, email, {
+      url: `https://${environment.authDomain}`,
+      handleCodeInApp: false
+    });
   }
 
   /**
