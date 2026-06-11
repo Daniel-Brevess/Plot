@@ -25,7 +25,11 @@ export class EditProfilePage implements OnInit {
 
   email = '';
   foto = 'https://i.pravatar.cc/150';
+  senhaAtual = '';
+  novaSenha = '';
+  confirmarSenha = '';
   salvando = false;
+  alterandoSenha = false;
   carregandoFoto = false;
 
   ngOnInit() {
@@ -62,6 +66,42 @@ export class EditProfilePage implements OnInit {
       await this.feedback.erro('Nao foi possivel atualizar o perfil. Tente novamente.');
     } finally {
       this.salvando = false;
+    }
+  }
+
+  async alterarSenha() {
+    if (this.alterandoSenha) {
+      return;
+    }
+
+    if (!this.senhaAtual || !this.novaSenha || !this.confirmarSenha) {
+      await this.feedback.info('Preencha a senha atual, a nova senha e a confirmacao.');
+      return;
+    }
+
+    if (this.novaSenha.length < 6) {
+      await this.feedback.erro('A nova senha deve ter pelo menos 6 caracteres.');
+      return;
+    }
+
+    if (this.novaSenha !== this.confirmarSenha) {
+      await this.feedback.erro('A confirmacao precisa ser igual a nova senha.');
+      return;
+    }
+
+    this.alterandoSenha = true;
+
+    try {
+      await this.authService.alterarSenha(this.senhaAtual, this.novaSenha);
+      this.senhaAtual = '';
+      this.novaSenha = '';
+      this.confirmarSenha = '';
+      await this.feedback.sucesso('Senha alterada com sucesso.');
+    } catch (error) {
+      console.error('Erro ao alterar senha:', error);
+      await this.feedback.erro(this.getMensagemErroSenha(error));
+    } finally {
+      this.alterandoSenha = false;
     }
   }
 
@@ -121,5 +161,23 @@ export class EditProfilePage implements OnInit {
 
   private fotoStorageKey(uid: string) {
     return `fotoPerfil:${uid}`;
+  }
+
+  private getMensagemErroSenha(error: unknown): string {
+    const err = error as { code?: string };
+
+    switch (err?.code) {
+      case 'auth/invalid-credential':
+      case 'auth/wrong-password':
+        return 'A senha atual esta incorreta.';
+      case 'auth/weak-password':
+        return 'Use uma nova senha mais forte, com pelo menos 6 caracteres.';
+      case 'auth/requires-recent-login':
+        return 'Entre novamente na conta antes de mudar a senha.';
+      case 'auth/operation-not-allowed':
+        return 'Esta conta nao permite mudanca de senha por e-mail e senha.';
+      default:
+        return 'Nao foi possivel alterar a senha. Tente novamente.';
+    }
   }
 }

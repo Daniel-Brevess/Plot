@@ -4,7 +4,8 @@ import { Capacitor } from '@capacitor/core';
 import { 
   Auth, 
   createUserWithEmailAndPassword, 
-  sendPasswordResetEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
   signInWithCredential,
   signInWithEmailAndPassword, 
   signInWithPopup, 
@@ -12,6 +13,7 @@ import {
   signOut, 
   user,
   User,
+  updatePassword,
   updateProfile
 } from '@angular/fire/auth';
 import { 
@@ -81,11 +83,16 @@ export class AuthService {
     return signInWithEmailAndPassword(this.auth, email, senha);
   }
 
-  /**
-   * Envia o e-mail de recuperacao de senha para o usuario.
-   */
-  recuperarSenha(email: string) {
-    return sendPasswordResetEmail(this.auth, email);
+  async alterarSenha(senhaAtual: string, novaSenha: string) {
+    const usuario = this.getUsuarioAtual();
+
+    if (!usuario || !usuario.email) {
+      throw new Error('Usuario nao autenticado.');
+    }
+
+    const credential = EmailAuthProvider.credential(usuario.email, senhaAtual);
+    await reauthenticateWithCredential(usuario, credential);
+    return updatePassword(usuario, novaSenha);
   }
 
   /**
