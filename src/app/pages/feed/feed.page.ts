@@ -137,12 +137,14 @@ export class FeedPage implements OnInit {
         await this.authService.removerFavorito(livro.id);
         this.favoritos.delete(livro.id);
         await this.feedback.info('Livro removido dos favoritos.');
+        this.triggerFeedback(false);
         return;
       }
 
       await this.authService.salvarFavorito(this.toFavoriteBook(livro));
       this.favoritos.add(livro.id);
       await this.feedback.sucesso('Livro adicionado aos favoritos.');
+      this.triggerFeedback(true);
     } catch (error) {
       console.error('Erro ao atualizar favorito:', error);
       this.erro = 'Nao foi possivel atualizar seus favoritos.';
@@ -166,5 +168,55 @@ export class FeedPage implements OnInit {
       primeiraPublicacao: livro.primeiraPublicacao,
       sinopse: livro.sinopse
     };
+  }
+
+  private triggerFeedback(favoritando: boolean): void {
+    if ('vibrate' in navigator) {
+      if (favoritando) {
+        navigator.vibrate([60, 50, 60]);
+      } else {
+        navigator.vibrate(80);
+      }
+    }
+
+    if (favoritando) {
+      this.playFavoriteSound();
+    }
+  }
+
+  private playFavoriteSound(): void {
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+
+      const ctx = new AudioCtx();
+
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(880, ctx.currentTime);
+      gain1.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+      osc1.start(ctx.currentTime);
+      osc1.stop(ctx.currentTime + 0.22);
+
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(1320, ctx.currentTime + 0.13);
+      gain2.gain.setValueAtTime(0, ctx.currentTime);
+      gain2.gain.setValueAtTime(0.3, ctx.currentTime + 0.13);
+      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.42);
+      osc2.start(ctx.currentTime + 0.13);
+      osc2.stop(ctx.currentTime + 0.42);
+
+      setTimeout(() => ctx.close(), 600);
+    } catch (e) {
+      console.warn('Feedback de som nÃ£o suportado:', e);
+    }
   }
 }
