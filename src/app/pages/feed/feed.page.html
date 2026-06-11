@@ -20,7 +20,7 @@
         type="button"
         class="favorite-button"
         [class.active]="favoritos.has(livro.id)"
-        [disabled]="salvandoFavorito === livro.id"
+        [disabled]="salvandoFavoritos.has(livro.id)"
         (click)="alternarFavorito($event, livro)"
         [attr.aria-label]="favoritos.has(livro.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'">
         <ion-icon [name]="favoritos.has(livro.id) ? 'heart' : 'heart-outline'"></ion-icon>

@@ -6,6 +6,7 @@ import { addIcons } from 'ionicons';
 import { heart, heartOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
 import { BookListItem, BookService } from '../../services/bookservice';
+import { FavoriteFeedbackService } from '../../services/favorite-feedback.service';
 import { FeedbackService } from '../../services/feedback.service';
 import { normalizeGenres } from '../../services/genre-preferences';
 
@@ -20,7 +21,7 @@ export class FeedPage implements OnInit {
   livros: BookListItem[] = [];
   loading = true;
   loadingMore = false;
-  salvandoFavorito = '';
+  salvandoFavoritos = new Set<string>();
   erro = '';
   temMaisLivros = false;
   favoritos = new Set<string>();
@@ -33,6 +34,7 @@ export class FeedPage implements OnInit {
   constructor(
     private authService: AuthService,
     private bookService: BookService,
+    private favoriteFeedback: FavoriteFeedbackService,
     private feedback: FeedbackService
   ) {
     addIcons({ heart, heartOutline, star, starHalf, starOutline });
@@ -66,8 +68,8 @@ export class FeedPage implements OnInit {
       await this.carregarPaginaDeRecomendacoes();
       await this.carregarFavoritos();
     } catch (error) {
-      console.error('Erro ao carregar recomendações:', error);
-      this.erro = 'Não foi possível carregar as recomendações. Tente novamente.';
+      console.error('Erro ao carregar recomendacoes:', error);
+      this.erro = 'Nao foi possivel carregar as recomendacoes. Tente novamente.';
     } finally {
       this.loading = false;
     }
@@ -84,9 +86,9 @@ export class FeedPage implements OnInit {
     try {
       await this.carregarPaginaDeRecomendacoes();
     } catch (error) {
-      console.error('Erro ao carregar mais recomendações:', error);
+      console.error('Erro ao carregar mais recomendacoes:', error);
       this.paginaAtual -= 1;
-      this.erro = 'Não foi possível carregar mais livros. Tente novamente.';
+      this.erro = 'Nao foi possivel carregar mais livros. Tente novamente.';
     } finally {
       this.loadingMore = false;
     }
@@ -126,31 +128,39 @@ export class FeedPage implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    if (this.salvandoFavorito) {
+    if (this.salvandoFavoritos.has(livro.id)) {
       return;
     }
 
-    this.salvandoFavorito = livro.id;
+    const estavaFavorito = this.favoritos.has(livro.id);
+    this.marcarSalvando(livro.id, true);
 
     try {
-      if (this.favoritos.has(livro.id)) {
-        await this.authService.removerFavorito(livro.id);
+      if (estavaFavorito) {
         this.favoritos.delete(livro.id);
+        void this.favoriteFeedback.remove();
+        await this.authService.removerFavorito(livro.id);
         await this.feedback.info('Livro removido dos favoritos.');
-        this.triggerFeedback(false);
         return;
       }
 
-      await this.authService.salvarFavorito(this.toFavoriteBook(livro));
       this.favoritos.add(livro.id);
+      void this.favoriteFeedback.favorite();
+      await this.authService.salvarFavorito(this.toFavoriteBook(livro));
       await this.feedback.sucesso('Livro adicionado aos favoritos.');
-      this.triggerFeedback(true);
     } catch (error) {
       console.error('Erro ao atualizar favorito:', error);
+
+      if (estavaFavorito) {
+        this.favoritos.add(livro.id);
+      } else {
+        this.favoritos.delete(livro.id);
+      }
+
       this.erro = 'Nao foi possivel atualizar seus favoritos.';
       await this.feedback.erro(this.erro);
     } finally {
-      this.salvandoFavorito = '';
+      this.marcarSalvando(livro.id, false);
     }
   }
 
@@ -170,53 +180,15 @@ export class FeedPage implements OnInit {
     };
   }
 
-  private triggerFeedback(favoritando: boolean): void {
-    if ('vibrate' in navigator) {
-      if (favoritando) {
-        navigator.vibrate([60, 50, 60]);
-      } else {
-        navigator.vibrate(80);
-      }
+  private marcarSalvando(bookId: string, salvando: boolean) {
+    const proximos = new Set(this.salvandoFavoritos);
+
+    if (salvando) {
+      proximos.add(bookId);
+    } else {
+      proximos.delete(bookId);
     }
 
-    if (favoritando) {
-      this.playFavoriteSound();
-    }
-  }
-
-  private playFavoriteSound(): void {
-    try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (!AudioCtx) return;
-
-      const ctx = new AudioCtx();
-
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(880, ctx.currentTime);
-      gain1.gain.setValueAtTime(0.25, ctx.currentTime);
-      gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
-      osc1.start(ctx.currentTime);
-      osc1.stop(ctx.currentTime + 0.22);
-
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.type = 'sine';
-      osc2.frequency.setValueAtTime(1320, ctx.currentTime + 0.13);
-      gain2.gain.setValueAtTime(0, ctx.currentTime);
-      gain2.gain.setValueAtTime(0.3, ctx.currentTime + 0.13);
-      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.42);
-      osc2.start(ctx.currentTime + 0.13);
-      osc2.stop(ctx.currentTime + 0.42);
-
-      setTimeout(() => ctx.close(), 600);
-    } catch (e) {
-      console.warn('Feedback de som nÃ£o suportado:', e);
-    }
+    this.salvandoFavoritos = proximos;
   }
 }

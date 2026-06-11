@@ -7,6 +7,7 @@ import { addIcons } from 'ionicons';
 import { heart, heartOutline, searchOutline, star, starHalf, starOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
 import { BookListItem, BookService } from '../../services/bookservice';
+import { FavoriteFeedbackService } from '../../services/favorite-feedback.service';
 import { FeedbackService } from '../../services/feedback.service';
 
 @Component({
@@ -19,6 +20,7 @@ import { FeedbackService } from '../../services/feedback.service';
 export class ExplorePage implements OnInit {
   private bookService = inject(BookService);
   private authService = inject(AuthService);
+  private favoriteFeedback = inject(FavoriteFeedbackService);
   private feedback = inject(FeedbackService);
 
   books: BookListItem[] = [];
@@ -26,7 +28,7 @@ export class ExplorePage implements OnInit {
   genero = 'Romance';
   loading = true;
   loadingMore = false;
-  salvandoFavorito = '';
+  salvandoFavoritos = new Set<string>();
   erro = '';
   temMaisLivros = false;
   favoritos = new Set<string>();
@@ -112,29 +114,37 @@ export class ExplorePage implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    if (this.salvandoFavorito) {
+    if (this.salvandoFavoritos.has(book.id)) {
       return;
     }
 
-    this.salvandoFavorito = book.id;
+    const estavaFavorito = this.favoritos.has(book.id);
+    this.marcarSalvando(book.id, true);
 
     try {
-      if (this.favoritos.has(book.id)) {
-        await this.authService.removerFavorito(book.id);
+      if (estavaFavorito) {
         this.favoritos.delete(book.id);
+        void this.favoriteFeedback.remove();
+        await this.authService.removerFavorito(book.id);
         await this.feedback.info('Livro removido dos favoritos.');
         return;
       }
 
-      await this.authService.salvarFavorito(this.toFavoriteBook(book));
       this.favoritos.add(book.id);
+      void this.favoriteFeedback.favorite();
+      await this.authService.salvarFavorito(this.toFavoriteBook(book));
       await this.feedback.sucesso('Livro adicionado aos favoritos.');
     } catch (error) {
       console.error('Erro ao atualizar favorito:', error);
+      if (estavaFavorito) {
+        this.favoritos.add(book.id);
+      } else {
+        this.favoritos.delete(book.id);
+      }
       this.erro = 'Nao foi possivel atualizar seus favoritos.';
       await this.feedback.erro(this.erro);
     } finally {
-      this.salvandoFavorito = '';
+      this.marcarSalvando(book.id, false);
     }
   }
 
@@ -152,5 +162,17 @@ export class ExplorePage implements OnInit {
       primeiraPublicacao: book.primeiraPublicacao,
       sinopse: book.sinopse
     };
+  }
+
+  private marcarSalvando(bookId: string, salvando: boolean) {
+    const proximos = new Set(this.salvandoFavoritos);
+
+    if (salvando) {
+      proximos.add(bookId);
+    } else {
+      proximos.delete(bookId);
+    }
+
+    this.salvandoFavoritos = proximos;
   }
 }

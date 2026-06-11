@@ -1,7 +1,9 @@
 <ion-content [forceOverscroll]="false">
   <div class="profile-header">
     <div class="top-actions">
-      <ion-back-button defaultHref="/" text="" mode="md"></ion-back-button>
+      <a routerLink="/feed" class="back-feed" aria-label="Voltar para o feed">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </a>
       <a routerLink="/edit-profile" aria-label="Editar perfil">
         <ion-icon name="create-outline" class="menu-icon"></ion-icon>
       </a>
@@ -20,11 +22,7 @@
       Sair
     </ion-button>
 
-    <button type="button" class="about-placeholder" aria-label="Sobre o Plot">
-      <a routerLink="/sobre" class="about-placeholder" aria-label="Sobre o Plot">
-  Sobre o Plot
-</a>
-    </button>
+    <a routerLink="/sobre" class="about-placeholder" aria-label="Sobre o Plot">Sobre o Plot</a>
   </div>
 
   <div class="preferences-section">

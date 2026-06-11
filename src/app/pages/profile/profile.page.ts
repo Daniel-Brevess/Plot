@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { IonBackButton, IonButton, IonContent, IonIcon } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { createOutline, heartOutline, logOutOutline, trashOutline } from 'ionicons/icons';
+import { arrowBackOutline, createOutline, heartOutline, logOutOutline, trashOutline } from 'ionicons/icons';
 import { AuthService, FavoriteBook } from '../../services/auth';
 import { FeedbackService } from '../../services/feedback.service';
 import { normalizeGenres } from '../../services/genre-preferences';
@@ -13,7 +13,7 @@ import { normalizeGenres } from '../../services/genre-preferences';
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [CommonModule, RouterLink, IonContent, IonBackButton, IonButton, IonIcon]
+  imports: [CommonModule, RouterLink, IonContent, IonButton, IonIcon]
 })
 export class ProfilePage implements OnInit {
   private authService = inject(AuthService);
@@ -30,7 +30,7 @@ export class ProfilePage implements OnInit {
   erroFavoritos = '';
 
   constructor() {
-    addIcons({ createOutline, heartOutline, logOutOutline, trashOutline });
+    addIcons({ arrowBackOutline, createOutline, heartOutline, logOutOutline, trashOutline });
   }
 
   async ngOnInit() {
